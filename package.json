@@ -1,0 +1,34 @@
+{
+  "name": "open-link-logger",
+  "version": "1.0.0",
+  "description": "Simple application to display internet speed test results in charts",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/majster-pl/open-link-logger.git"
+  },
+  "keywords": [
+    "net",
+    "speed",
+    "test",
+    "speedtest",
+    "log",
+    "logs",
+    "logger",
+    "internet"
+  ],
+  "author": "Szymon Waliczek",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/majster-pl/open-link-logger/issues"
+  },
+  "homepage": "https://github.com/majster-pl/open-link-logger#readme",
+  "dependencies": {
+    "bootstrap": "^5.1.3",
+    "express": "^4.17.2",
+    "minimist": "^1.2.5"
+  }
+}

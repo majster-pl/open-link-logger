@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://momentjs.com/downloads/moment.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js">
+    </script>
+    <link rel="stylesheet" href="../css/main.min.css">
+    <title>Open-Link-Logger</title>
+</head>
+
+<body>
+    <div class="container">
+        <canvas id="mainChart">
+        </canvas>
+    </div>
+
+    <script>
+
+        $(document).ready(function () {
+            let chart_data_download = [];
+            let chart_data_upload = [];
+            let chart_data_ping = [];
+            let chart_data_time = [];
+
+            console.log('loading json...')
+
+            let filtered_data = {};
+            let url = "data"
+            $.getJSON(url, function (d) {
+                console.log("success");
+            }).done(function (d) {
+                console.log("done");
+            }).fail(function (d) {
+                console.log("error");
+                console.log(url);
+            }).always(function (d) {
+                console.log("complete");
+                filtered_data = d.speedtest;
+                filtered_data = filtered_data.filter(function (i, n) {
+                    return moment().subtract(10, 'hours') < moment(new Date(i.timestamp));
+                });
+                // console.log(filtered_data);
+                // let test = []
+                filtered_data.map(item => {
+                    chart_data_download.push(item.download / 1000000);
+                });
+                filtered_data.map(item => {
+                    chart_data_upload.push(item.upload / 1000000);
+                });
+                filtered_data.map(item => {
+                    chart_data_ping.push(item.ping);
+                });
+                filtered_data.map(item => {
+                    chart_data_time.push(moment(new Date(item.timestamp)).format("DD-MMM-YYYY HH:mm"));
+                });
+                // console.log(test);
+                renderChart();
+            });
+
+            // function to render chart
+            const renderChart = () => {
+                let mainChart = document.getElementById('mainChart').getContext('2d');
+                new Chart(mainChart, {
+                    type: 'line',
+                    data: {
+                        labels: chart_data_time,
+                        datasets: [
+                            {
+                                label: 'Download',
+                                data: chart_data_download,
+                                borderColor: "#ffbb00",
+                                fill: false,
+                                // cubicInterpolationMode: "monotone",
+                                tension: 0.4,
+                                
+
+                            },
+                            {
+                                label: 'Upload',
+                                data: chart_data_upload,
+                                borderColor: "#39a883",
+                                fill: false,
+                                // cubicInterpolationMode: "monotone",
+                                tension: 0.4,
+
+                            },
+                            {
+                                label: 'Ping',
+                                data: chart_data_ping,
+                                borderColor: "red",
+                                fill: false,
+                                cubicInterpolationMode: "monotone",
+                                tension: 0.4,
+
+                            },
+                        ],
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Last 24h stats',
+                            }
+                        },
+                        scales: {
+                            y: {
+                                ticks: {
+                                    // Include a dollar sign in the ticks
+                                    callback: function (value, index, values) {
+                                        return value + " Mpbs";
+                                    }
+                                }
+                            }
+                        },
+
+                    }
+                })
+            }
+        });
+
+
+    </script>
+</body>
+
+</html>
