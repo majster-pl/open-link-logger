@@ -11,12 +11,11 @@ import sys
 import time
 import os.path
 
-# file_name = '/home/szymon/Apps/my-netspeed-loger/data.json'
-
 # Application confing
 config = configparser.ConfigParser()
 files = ['open-link.conf']
 dataset = config.read(files)
+# check if config file exist
 if len(dataset) != len(files):
     logging.info(f"Config file don't exist, creating one...")
     config["Default"] = {
@@ -25,21 +24,20 @@ if len(dataset) != len(files):
         'test-reiteration': 3,
         'port': 3900
     }
+    # save config file
     with open("open-link.conf", "w") as file_object:
         config.write(file_object)
         logging.info("Config file 'open-link.conf' created")
 
+# open and read config file
 config.read('open-link.conf')
-
 file_name = config['Default']['data-path']
 first_run = config['Default']['first-run']
 test_reiteration = config['Default']['test-reiteration']
 port = config['Default']['port']
 test_count = 0
 
-# colors
-
-
+# define termianl colors
 class bcolors:
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
@@ -52,7 +50,7 @@ class bcolors:
     UNDERLINE = '\033[4m'
 
 
-# Logging
+# Application logging
 logging.basicConfig(
     format='%(asctime)s %(levelname)-8s %(message)s',
     level=logging.INFO,
@@ -60,10 +58,7 @@ logging.basicConfig(
 
 logging.info('Starting Open-Link-Logger...')
 
-# def check_if_config_file_exist():
-#     if(os.path.isfile())
-
-
+# function to check if scrip running for first time, if so run setup guide
 def check_if_first_run():
     if first_run == "true":
         print(f'{bcolors.OKGREEN}\
@@ -128,16 +123,15 @@ f"\n[2/4] Specify the path where you want data to be collected:\n\
                 q_reiteration = int(input(f"\n[3/4] How many times you want test to retry connect to server before exiting the app (if added to crontab, sometimes too many tests running at the same time from differet locations and blocking servers from respodning)\n{bcolors.HEADER}[{default_reiteration}] {bcolors.ENDC}: ") or 3)
                 break
             except ValueError:
-                print(f"{bcolors.FAIL}Please input integer only...{bcolors.ENDC}")  
+                print(f"{bcolors.FAIL}Please enter integer only...{bcolors.ENDC}")  
         if not q_reiteration:
             q_reiteration = default_reiteration
         print(
             f'Sppedtest retry set to: {bcolors.OKGREEN} {q_reiteration} {bcolors.ENDC}')
         config['Default']['test-reiteration'] = str(q_reiteration)
 
-        # Add to crontab
+        # Add job to crontab
         default_crontab = 7
-        q_crontab = 7
         entires = {
             1: ' * 12 * * * ',
             2: ' * 00 * * * ',
@@ -155,7 +149,7 @@ f"\n[2/4] Specify the path where you want data to be collected:\n\
             6: 'Every hour @ 30 minutes past',
             7: 'Do not add to crontab (I\'ll run this script manually whenever I want)'
         }
-        # while not int(q_crontab) in range(1, 7):
+
         while True:
             try:
                 q_crontab = int(input(
@@ -174,35 +168,40 @@ Choose one options from below and it will be added to crontab for you.\n\
                 else:
                     print(f"{bcolors.FAIL}Invalid selection!{bcolors.ENDC}")
             except ValueError:
-                print(f"{bcolors.FAIL}Please input integer only...{bcolors.ENDC}")
+                print(f"{bcolors.FAIL}Please enter integer only...{bcolors.ENDC}")
 
-
+        # check if other then default selected
         if not q_crontab:
             q_crontab = default_crontab
             print(f'Nothing added to crontab.')
         else:
             command = f'crontab -l | {{ cat; echo "{entires[q_crontab]} cd {os.getcwd()} && /usr/bin/python3 open-link-logger.py >> crontam_jobs.log 2>&1"; }} | crontab -'
-            os.system(command)
-            print(f'\n{bcolors.WARNING}New entry added to crontab, to edit run "crontab -e" in terminal{bcolors.ENDC}')
-            print(
-                f'Test will run automatically: {bcolors.OKGREEN} {entires_text[q_crontab]} {bcolors.ENDC}')
+            # os.system(command)
+            # print(f'\n{bcolors.WARNING}New entry added to crontab, to edit run "crontab -e" in terminal{bcolors.ENDC}')
+            # print(
+            #     f'Test will run automatically: {bcolors.OKGREEN} {entires_text[q_crontab]} {bcolors.ENDC}')
 
-        config['Default']['first-run'] = 'false'
-        with open('open-link.conf', 'w') as configfile:
-            config.write(configfile)
+        # Ask user if happy to save data.
+        while True:
+            try:
+                q_save = int(input(
+                    f"\nDo you want to save and continue? [y/N]\n{bcolors.HEADER}[{default_reiteration}] {bcolors.ENDC}: ") or "N")
+                if q_save not in ['y', 'Y', 'Yes', 'yes']:
+                    print("Restarting...")
+                    check_if_first_run()
+                    break
+                else:
+                    config['Default']['first-run'] = 'false'
+                    with open('open-link.conf', 'w') as configfile:
+                        config.write(configfile)
+                    print(
+            f'{bcolors.FAIL}\nYou are all set and ready to go!\n\
+            Enjoy my app, you can run ./open-link-logger.py again to get you first test ;) - Hej!{bcolors.ENDC}')
+                    sys.exit()
 
-        # test = 'crontab -l 2>/dev/null | cat - <(echo "*/15 * * * * /usr/bin/python3 ~/Apps/my-netspeed-loger/my-netspeed-loger.py >> ~/Apps/my-netspeed-loger/crontab_jobs.log 2>&1") | crontab -'
-        # pro = subprocess.run(["crontab", "-l", "2>/dev/null", "|", "cat", "-",
-            #    "<(echo */15 * * * * /usr/bin/python3 ~/Apps/my-netspeed-loger/my-netspeed-loger.py >> ~/Apps/my-netspeed-loger/crontab_jobs.log 2>&1)", "|", "crontab", "-"])
-        # pro = subprocess.run(test)
-        # print(pro.returncode)
-        # os.system(test)
-        # subprocess.run(
-        #    [test], stdout=None, stderr=None)
-        print(
-f'{bcolors.FAIL}\nYou are all set and ready to go!\n\
-Enjoy my app, you can run ./open-link-logger.py again to get you first test ;) - Hej!{bcolors.ENDC}')
-        sys.exit()
+            except ValueError:
+                print(f"{bcolors.FAIL}Please enter integer only...{bcolors.ENDC}")
+
 
 
 def start_local_webserver():
