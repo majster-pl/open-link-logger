@@ -146,7 +146,7 @@ f"\n[2/4] Specify the path where you want data to be collected:\n\
             3: 'Twice a day @ 12:00 and 00:00',
             4: 'Every hour @ 00 hours',
             5: 'Every hour @ 30 minutes past',
-            6: 'Every hour @ 30 minutes past',
+            6: 'Every 30 minutes',
             7: 'Do not add to crontab (I\'ll run this script manually whenever I want)'
         }
 
@@ -176,32 +176,27 @@ Choose one options from below and it will be added to crontab for you.\n\
             print(f'Nothing added to crontab.')
         else:
             command = f'crontab -l | {{ cat; echo "{entires[q_crontab]} cd {os.getcwd()} && /usr/bin/python3 open-link-logger.py >> crontam_jobs.log 2>&1"; }} | crontab -'
-            # os.system(command)
-            # print(f'\n{bcolors.WARNING}New entry added to crontab, to edit run "crontab -e" in terminal{bcolors.ENDC}')
-            # print(
-            #     f'Test will run automatically: {bcolors.OKGREEN} {entires_text[q_crontab]} {bcolors.ENDC}')
+            print(
+                f'Test will run automatically: {bcolors.OKGREEN} {entires_text[q_crontab]} {bcolors.ENDC}')
 
         # Ask user if happy to save data.
         while True:
-            try:
-                q_save = int(input(
-                    f"\nDo you want to save and continue? [y/N]\n{bcolors.HEADER}[{default_reiteration}] {bcolors.ENDC}: ") or "N")
-                if q_save not in ['y', 'Y', 'Yes', 'yes']:
-                    print("Restarting...")
-                    check_if_first_run()
-                    break
-                else:
-                    config['Default']['first-run'] = 'false'
-                    with open('open-link.conf', 'w') as configfile:
-                        config.write(configfile)
-                    print(
-            f'{bcolors.FAIL}\nYou are all set and ready to go!\n\
-            Enjoy my app, you can run ./open-link-logger.py again to get you first test ;) - Hej!{bcolors.ENDC}')
-                    sys.exit()
-
-            except ValueError:
-                print(f"{bcolors.FAIL}Please enter integer only...{bcolors.ENDC}")
-
+            q_save = input(
+                f"\nDo you want to save all settings?\n{bcolors.HEADER}[Y/n]{bcolors.ENDC}: ") or "Y"
+            if q_save not in ['y', 'Y', 'Yes', 'yes']:
+                print("Restarting...")
+                check_if_first_run()
+                break
+            else:
+                os.system(command)
+                print(f'\n{bcolors.WARNING}New entry added to crontab, to edit run "crontab -e" in terminal{bcolors.ENDC}')
+                config['Default']['first-run'] = 'false'
+                with open('open-link.conf', 'w') as configfile:
+                    config.write(configfile)
+                print(
+f'{bcolors.OKGREEN}\nYou are all set and ready to go!\n\
+Enjoy my app, you can run ./open-link-logger.py again to get you first test ;) - Hej!{bcolors.ENDC}')
+                sys.exit()
 
 
 def start_local_webserver():

@@ -661,3 +661,30 @@ Do you want to continue ? (y/N)Traceback (most recent call last):
   File "/home/szymon/Apps/open-link-logger/open-link-logger.py", line 87, in check_if_first_run
     q_procceed = input("Do you want to continue ? (y/N)")
 EOFError: EOF when reading a line
+2022-01-16 01:00:02 INFO     Starting Open-Link-Logger...
+[92m####################################################################################### 
+#                                                                                    ##
+#    ▌ ▌   ▜               ▐       ▞▀▖            ▌  ▗    ▌     ▌                    ##
+#    ▌▖▌▞▀▖▐ ▞▀▖▞▀▖▛▚▀▖▞▀▖ ▜▀ ▞▀▖  ▌ ▌▛▀▖▞▀▖▛▀▖▄▄▖▌  ▄ ▛▀▖▌▗▘▄▄▖▌  ▞▀▖▞▀▌▞▀▌▞▀▖▙▀▖   ##
+#    ▙▚▌▛▀ ▐ ▌ ▖▌ ▌▌▐ ▌▛▀  ▐ ▖▌ ▌  ▌ ▌▙▄▘▛▀ ▌ ▌   ▌  ▐ ▌ ▌▛▚    ▌  ▌ ▌▚▄▌▚▄▌▛▀ ▌     ##
+#    ▘ ▘▝▀▘ ▘▝▀ ▝▀ ▘▝ ▘▝▀▘  ▀ ▝▀   ▝▀ ▌  ▝▀▘▘ ▘   ▀▀▘▀▘▘ ▘▘ ▘   ▀▀▘▝▀ ▗▄▘▗▄▘▝▀▘▘     ##
+#                                                                                    ##
+#######################################################################################[0m
+
+[94mUsing this script you can check you internet connection speed as often as you want
+and every test will be sotored localy. Results can then be viewed in your browser.[0m
+
+[93mThis is Open Source software released under MIT licence and is provided "AS IS" without
+any warranty on any kind!
+
+[96mAuthor[0m:       Szymon Waliczek
+[96mContact[0m:      waliczek.szymon@gmail.com
+[96mInstructions[0m: https://github.com/majster-pl/open-link-logger/blob/main/README.md
+[96mSource Code[0m:  https://github.com/majster-pl/open-link-logger
+
+Do you want to continue ? (y/N)Traceback (most recent call last):
+  File "/home/szymon/Apps/open-link-logger/open-link-logger.py", line 254, in <module>
+    check_if_first_run()
+  File "/home/szymon/Apps/open-link-logger/open-link-logger.py", line 82, in check_if_first_run
+    q_procceed = input("Do you want to continue ? (y/N)")
+EOFError: EOF when reading a line
