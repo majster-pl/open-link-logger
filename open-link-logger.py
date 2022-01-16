@@ -163,7 +163,7 @@ Choose one options from below and it will be added to crontab for you.\n\
     6 => {entires_text[6]}\n{bcolors.HEADER}\
     7 => {entires_text[7]}{bcolors.ENDC}\n\
 {bcolors.HEADER}[{default_crontab}]{bcolors.ENDC}: ") or 7)
-                if q_crontab in range(1,7):
+                if q_crontab in range(1,8):
                     break
                 else:
                     print(f"{bcolors.FAIL}Invalid selection!{bcolors.ENDC}")
