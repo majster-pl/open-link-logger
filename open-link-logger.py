@@ -195,7 +195,7 @@ Choose one options from below and it will be added to crontab for you.\n\
                     config.write(configfile)
                 print(
 f'{bcolors.OKGREEN}\nYou are all set and ready to go!\n\
-Enjoy my app, you can run ./open-link-logger.py again to get you first test ;) - Hej!{bcolors.ENDC}')
+To get your first test run ./open-link-logger.py again ;) - Enjoy!{bcolors.ENDC}')
                 sys.exit()
 
 
