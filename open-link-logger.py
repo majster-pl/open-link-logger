@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+from ast import While
 from asyncio.log import logger
 import subprocess
 import json
@@ -66,14 +67,14 @@ logging.info('Starting Open-Link-Logger...')
 def check_if_first_run():
     if first_run == "true":
         print(f'{bcolors.OKGREEN}\
-# \n\
-# \n\
-# ▌ ▌   ▜               ▐       ▞▀▖            ▌  ▗    ▌     ▌                    ##\n\
-# ▌▖▌▞▀▖▐ ▞▀▖▞▀▖▛▚▀▖▞▀▖ ▜▀ ▞▀▖  ▌ ▌▛▀▖▞▀▖▛▀▖▄▄▖▌  ▄ ▛▀▖▌▗▘▄▄▖▌  ▞▀▖▞▀▌▞▀▌▞▀▖▙▀▖   ##\n\
-# ▙▚▌▛▀ ▐ ▌ ▖▌ ▌▌▐ ▌▛▀  ▐ ▖▌ ▌  ▌ ▌▙▄▘▛▀ ▌ ▌   ▌  ▐ ▌ ▌▛▚    ▌  ▌ ▌▚▄▌▚▄▌▛▀ ▌     ##\n\
-# ▘ ▘▝▀▘ ▘▝▀ ▝▀ ▘▝ ▘▝▀▘  ▀ ▝▀   ▝▀ ▌  ▝▀▘▘ ▘   ▀▀▘▀▘▘ ▘▘ ▘   ▀▀▘▝▀ ▗▄▘▗▄▘▝▀▘▘     ##\n\
-# \n\
-# {bcolors.ENDC}\n\n\
+####################################################################################### \n\
+#                                                                                    ##\n\
+#    ▌ ▌   ▜               ▐       ▞▀▖            ▌  ▗    ▌     ▌                    ##\n\
+#    ▌▖▌▞▀▖▐ ▞▀▖▞▀▖▛▚▀▖▞▀▖ ▜▀ ▞▀▖  ▌ ▌▛▀▖▞▀▖▛▀▖▄▄▖▌  ▄ ▛▀▖▌▗▘▄▄▖▌  ▞▀▖▞▀▌▞▀▌▞▀▖▙▀▖   ##\n\
+#    ▙▚▌▛▀ ▐ ▌ ▖▌ ▌▌▐ ▌▛▀  ▐ ▖▌ ▌  ▌ ▌▙▄▘▛▀ ▌ ▌   ▌  ▐ ▌ ▌▛▚    ▌  ▌ ▌▚▄▌▚▄▌▛▀ ▌     ##\n\
+#    ▘ ▘▝▀▘ ▘▝▀ ▝▀ ▘▝ ▘▝▀▘  ▀ ▝▀   ▝▀ ▌  ▝▀▘▘ ▘   ▀▀▘▀▘▘ ▘▘ ▘   ▀▀▘▝▀ ▗▄▘▗▄▘▝▀▘▘     ##\n\
+#                                                                                    ##\n\
+#######################################################################################{bcolors.ENDC}\n\n\
 {bcolors.OKBLUE}Using this script you can check you internet connection speed as often as you want\n\
 and every test will be sotored localy. Results can then be viewed in your browser.{bcolors.ENDC}\n\n\
 {bcolors.WARNING}This is Open Source software released under MIT licence and is provided "AS IS" without\n\
@@ -94,37 +95,40 @@ any warranty on any kind!\n\n\
         while True:
             try:
                 q_port = int(input(
-                    f"[1/4] What port do you want a web server to run on? {bcolors.HEADER}[3900]{bcolors.ENDC}:"))
+                    f"[1/4] What port do you want a web server to run on?\n{bcolors.HEADER}[3900]: {bcolors.ENDC}") or 3900)
                 break
             except ValueError:
-                print("Please enter valid port number...")  
+                print(f"{bcolors.FAIL}Please enter valid port number...{bcolors.ENDC}")  
 
         if q_port:
-            print(f'Port set to: {bcolors.OKGREEN} {q_port} {bcolors.ENDC}')
+            print(f'Port set to: {bcolors.OKGREEN}{q_port}{bcolors.ENDC}')
         else:
             q_port = 3900
-            print(f'Port set to: {bcolors.OKGREEN} {q_port} {bcolors.ENDC}')
+            print(f'Port set to: {bcolors.OKGREEN}{q_port}{bcolors.ENDC}')
         config['Default']['port'] = str(q_port)
-        # q_port = int(input(
-        #     f"[1/4] What port do you want a web server to run on? {bcolors.HEADER}[3900]{bcolors.ENDC}:"))
 
         # path to data.json file
         Default_path = os.getcwd() + "/data.json"
         q_data_path = input(
-            f"\n[2/4] Specify the path where you want data to be collected {bcolors.HEADER}[{Default_path}] {bcolors.ENDC}:")
+f"\n[2/4] Specify the path where you want data to be collected:\n\
+{bcolors.HEADER}[{Default_path}]{bcolors.ENDC}: ")
         if q_data_path:
             print(
-                f'Path set to: {bcolors.OKGREEN} {q_data_path} {bcolors.ENDC}')
+                f'Path set to: {bcolors.OKGREEN}{q_data_path}{bcolors.ENDC}')
         else:
             q_data_path = Default_path
             print(
-                f'Path set to: {bcolors.OKGREEN} {q_data_path} {bcolors.ENDC}')
+                f'Path set to: {bcolors.OKGREEN}{q_data_path}{bcolors.ENDC}')
         config['Default']['data-path'] = str(q_data_path)
 
         # Number of test reiterations
         default_reiteration = 3
-        q_reiteration = input(
-            f"\n[3/4] How many times you want test to retry connect to server before exiting the app (if added to crontab, sometimes many tests running at the same time and blocking servers from respodning). {bcolors.HEADER}[{default_reiteration}] {bcolors.ENDC}:")
+        while True:
+            try:
+                q_reiteration = int(input(f"\n[3/4] How many times you want test to retry connect to server before exiting the app (if added to crontab, sometimes too many tests running at the same time from differet locations and blocking servers from respodning)\n{bcolors.HEADER}[{default_reiteration}] {bcolors.ENDC}: ") or 3)
+                break
+            except ValueError:
+                print(f"{bcolors.FAIL}Please input integer only...{bcolors.ENDC}")  
         if not q_reiteration:
             q_reiteration = default_reiteration
         print(
@@ -133,6 +137,7 @@ any warranty on any kind!\n\n\
 
         # Add to crontab
         default_crontab = 7
+        q_crontab = 7
         entires = {
             1: ' * 12 * * * ',
             2: ' * 00 * * * ',
@@ -148,28 +153,39 @@ any warranty on any kind!\n\n\
             4: 'Every hour @ 00 hours',
             5: 'Every hour @ 30 minutes past',
             6: 'Every hour @ 30 minutes past',
+            7: 'Do not add to crontab (I\'ll run this script manually whenever I want)'
         }
-
-        q_crontab = int(input(
-f"\n[4/4] If you want your internet test to be run automaticaly, it can be added to crontab, check out options below {bcolors.HEADER}[{default_crontab}]{bcolors.ENDC}:\n\
-Once you choose one of options below, selected will be added to your crontab.\n\
+        # while not int(q_crontab) in range(1, 7):
+        while True:
+            try:
+                q_crontab = int(input(
+f"\n[4/4] Now you can add speedtest to crontab to be lunched automaticaly.\n\
+Choose one options from below and it will be added to crontab for you.\n\
     1 => {entires_text[1]}\n\
     2 => {entires_text[2]}\n\
     3 => {entires_text[3]}\n\
     4 => {entires_text[4]}\n\
     5 => {entires_text[5]}\n\
     6 => {entires_text[6]}\n{bcolors.HEADER}\
-    7 => Do not add to crontab (I'll run this script manually whenever I want){bcolors.ENDC}\n\
-"))
+    7 => {entires_text[7]}{bcolors.ENDC}\n\
+{bcolors.HEADER}[{default_crontab}]{bcolors.ENDC}: ") or 7)
+                if q_crontab in range(1,7):
+                    break
+                else:
+                    print(f"{bcolors.FAIL}Invalid selection!{bcolors.ENDC}")
+            except ValueError:
+                print(f"{bcolors.FAIL}Please input integer only...{bcolors.ENDC}")
+
+
         if not q_crontab:
             q_crontab = default_crontab
             print(f'Nothing added to crontab.')
         else:
             command = f'crontab -l | {{ cat; echo "{entires[q_crontab]} cd {os.getcwd()} && /usr/bin/python3 open-link-logger.py >> crontam_jobs.log 2>&1"; }} | crontab -'
-            print(
-                f'Test will run: {bcolors.OKGREEN} {entires_text[q_crontab]} {bcolors.ENDC}')
             os.system(command)
-            print('New entry added to crontab, to edit run "crontab -e" in terminal')
+            print(f'\n{bcolors.WARNING}New entry added to crontab, to edit run "crontab -e" in terminal{bcolors.ENDC}')
+            print(
+                f'Test will run automatically: {bcolors.OKGREEN} {entires_text[q_crontab]} {bcolors.ENDC}')
 
         config['Default']['first-run'] = 'false'
         with open('open-link.conf', 'w') as configfile:
@@ -184,7 +200,8 @@ Once you choose one of options below, selected will be added to your crontab.\n\
         # subprocess.run(
         #    [test], stdout=None, stderr=None)
         print(
-            f'{bcolors.FAIL}Run ./open-link-logger.py again to get you first test ;) - enjoy!{bcolors.ENDC}')
+f'{bcolors.FAIL}\nYou are all set and ready to go!\n\
+Enjoy my app, you can run ./open-link-logger.py again to get you first test ;) - Hej!{bcolors.ENDC}')
         sys.exit()
 
 
