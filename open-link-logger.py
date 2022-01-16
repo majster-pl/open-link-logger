@@ -10,6 +10,7 @@ import requests
 import sys
 import time
 import os.path
+from shutil import copyfile
 
 # Application confing
 config = configparser.ConfigParser()
@@ -31,7 +32,7 @@ if len(dataset) != len(files):
 
 # open and read config file
 config.read('open-link.conf')
-file_name = config['Default']['data-path']
+data_json_path = config['Default']['data-path']
 first_run = config['Default']['first-run']
 test_reiteration = config['Default']['test-reiteration']
 port = config['Default']['port']
@@ -174,7 +175,7 @@ Choose one options from below and it will be added to crontab for you.\n\
             print(f'{bcolors.OKBLUE}Nothing added to crontab.{bcolors.ENDC}')
         else:
             if not q_crontab == 7:
-                command = f'crontab -l | {{ cat; echo "{entires[q_crontab]} cd {os.getcwd()} && /usr/bin/python3 open-link-logger.py >> crontam_jobs.log 2>&1"; }} | crontab -'
+                command = f'crontab -l | {{ cat; echo "{entires[q_crontab]} cd {os.getcwd()} && /usr/bin/python3 open-link-logger.py >> crontab_jobs.log 2>&1"; }} | crontab -'
                 print(
                 f'Test will run automatically: {bcolors.OKGREEN} {entires_text[q_crontab]} {bcolors.ENDC}')
 
@@ -199,7 +200,7 @@ f'{bcolors.OKGREEN}\nYou are all set and ready to go!\n\
 To get your first test run ./open-link-logger.py again ;) - Enjoy!{bcolors.ENDC}')
                 sys.exit()
 
-
+# Function to check if local server running if not start it 
 def start_local_webserver():
     # try to connect to local server if running don't start another server
     try:
@@ -216,12 +217,16 @@ def start_local_webserver():
         logging.info(f"Starting local server on port: {port}")
         # print(f"Starting local server...")
         subprocess.Popen(
-            ["node", "app.js", "-p", port, "-d", file_name], stdout=None, stderr=None)
+            ["node", "app.js", "-p", port, "-d", data_json_path], stdout=None, stderr=None)
         return
 
+# function to append results in data.json file
+def save_results(new_data, filename=data_json_path):
+    # check if data.json file exist if not copy from template
+    if not os.path.exists(data_json_path):
+        logging.info('New data.json created.')
+        copyfile('./sample/data_blank.json', data_json_path)
 
-def save_results(new_data, filename=file_name):
-    # function to append new results to json file.
     with open(filename, 'r+') as file:
         file_data = json.load(file)
         file_data["speedtest"].append(new_data)
@@ -230,7 +235,7 @@ def save_results(new_data, filename=file_name):
         json.dump(file_data, file, indent=4)
         logging.info(f"Results added to {filename}")
 
-
+# run speedtest with parameters from config file
 def run_speedtest_cli():
     global test_count
     test_count += 1
@@ -254,6 +259,7 @@ check_if_first_run()
 start_local_webserver()
 result = run_speedtest_cli()
 
+# if unable to run test, retry number of times from config.
 while not result:
     if test_count < int(test_reiteration):
         logging.error('Test failed')
