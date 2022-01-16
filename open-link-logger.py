@@ -131,7 +131,6 @@ f"\n[2/4] Specify the path where you want data to be collected:\n\
         config['Default']['test-reiteration'] = str(q_reiteration)
 
         # Add job to crontab
-        default_crontab = 7
         entires = {
             1: ' * 12 * * * ',
             2: ' * 00 * * * ',
@@ -162,7 +161,7 @@ Choose one options from below and it will be added to crontab for you.\n\
     5 => {entires_text[5]}\n\
     6 => {entires_text[6]}\n{bcolors.HEADER}\
     7 => {entires_text[7]}{bcolors.ENDC}\n\
-{bcolors.HEADER}[{default_crontab}]{bcolors.ENDC}: ") or 7)
+{bcolors.HEADER}[7]{bcolors.ENDC}: ") or 7)
                 if q_crontab in range(1,8):
                     break
                 else:
@@ -171,12 +170,12 @@ Choose one options from below and it will be added to crontab for you.\n\
                 print(f"{bcolors.FAIL}Please enter integer only...{bcolors.ENDC}")
 
         # check if other then default selected
-        if not q_crontab:
-            q_crontab = default_crontab
-            print(f'Nothing added to crontab.')
+        if q_crontab == 7:
+            print(f'{bcolors.OKBLUE}Nothing added to crontab.{bcolors.ENDC}')
         else:
-            command = f'crontab -l | {{ cat; echo "{entires[q_crontab]} cd {os.getcwd()} && /usr/bin/python3 open-link-logger.py >> crontam_jobs.log 2>&1"; }} | crontab -'
-            print(
+            if not q_crontab == 7:
+                command = f'crontab -l | {{ cat; echo "{entires[q_crontab]} cd {os.getcwd()} && /usr/bin/python3 open-link-logger.py >> crontam_jobs.log 2>&1"; }} | crontab -'
+                print(
                 f'Test will run automatically: {bcolors.OKGREEN} {entires_text[q_crontab]} {bcolors.ENDC}')
 
         # Ask user if happy to save data.
@@ -188,8 +187,10 @@ Choose one options from below and it will be added to crontab for you.\n\
                 check_if_first_run()
                 break
             else:
-                os.system(command)
-                print(f'\n{bcolors.WARNING}New entry added to crontab, to edit run "crontab -e" in terminal{bcolors.ENDC}')
+                if not q_crontab == 7:
+                    os.system(command)
+                    print(f'\n{bcolors.WARNING}New entry added to crontab, to edit run "crontab -e" in terminal{bcolors.ENDC}')
+
                 config['Default']['first-run'] = 'false'
                 with open('open-link.conf', 'w') as configfile:
                     config.write(configfile)
