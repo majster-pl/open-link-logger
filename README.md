@@ -1,2 +1,30 @@
-# open-link-logger
-Simple python and node.js application to check and log your internet connection
+﻿![enter image description here](https://github.com/majster-pl/open-link-logger/raw/main/img/logo-with-title.png)
+
+# Open-Link-Logger
+
+Open Link Logger is a simple python script which will test your internet connection speed and display results in browser as chart. It has been tested on Ubuntu based Linux distributions.
+
+
+## Requirements
+
+Before you start using this software make sure you have following installed on your system:
+ - [speedtest-cli](https://www.speedtest.net/apps/cli) installed on the system.
+ - Python3
+
+## Compatibility
+
+This software was tested on Ubuntu Linux and might not work on other distributions available on this planet. Feel free to test it and report if that works on other distributions or even better if that doesn't work on your system consider [contributing](https://github.com/majster-pl/open-link-logger) to this project by fixing the issue :)
+
+## Licence
+
+**MIT License**
+Copyright (c) 2022 Szymon Waliczek
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+https://opensource.org/licenses/MIT
+
