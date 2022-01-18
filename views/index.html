@@ -46,7 +46,7 @@
                 console.log("complete");
                 filtered_data = d.speedtest;
                 filtered_data = filtered_data.filter(function (i, n) {
-                    return moment().subtract(10, 'hours') < moment(new Date(i.timestamp));
+                    return moment().subtract(24, 'hours') < moment(new Date(i.timestamp));
                 });
                 // console.log(filtered_data);
                 // let test = []
