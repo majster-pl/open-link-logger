@@ -216,8 +216,13 @@ def start_local_webserver():
     except:
         logging.info(f"Starting local server on port: {port}")
         # print(f"Starting local server...")
-        subprocess.Popen(
+        process = subprocess.Popen(
             ["node", "app.js", "-p", port, "-d", data_json_path], stdout=None, stderr=None)
+        # Write PID file
+        pidfilename = os.path.join(os.getcwd(), 'OLL-web-server.pid')
+        pidfile = open(pidfilename, 'w')
+        pidfile.write(str(process.pid))
+        pidfile.close()
         return
 
 # function to append results in data.json file
