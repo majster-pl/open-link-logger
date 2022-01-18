@@ -5,8 +5,8 @@ const app = express();
 
 const port = argv.p || 3900;
 const data_path = argv.d || __dirname + "/data.json";
-console.dir(port);
-console.dir(data_path);
+// console.dir(port);
+// console.dir(data_path);
 
 app.listen(port);
 
