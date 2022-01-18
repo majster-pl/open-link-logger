@@ -10,6 +10,7 @@ Open Link Logger is a simple python script which will test your internet connect
 Before you start using this software make sure you have following installed on your system:
  - [speedtest-cli](https://www.speedtest.net/apps/cli) installed on the system.
  - Python3
+ - [git](https://git-scm.com/download/linux)
 
 ## Compatibility
 
@@ -19,9 +20,9 @@ This software was tested on Ubuntu Linux and might not work on other distributio
 
 .1 Install **speedtest-cli**, **nodejs**, **npm**
 
-    sudo apt install speedtest-cli nodejs
+    sudo apt install speedtest-cli nodejs npm git
 
-.2 Download project *(make sure you download project to final destination, if project path will be changed crontab jobs will not work anymore until crontab entry updated).*
+.2 Clone project *(make sure you download project to final destination, if project path will be changed crontab jobs will not work anymore until crontab entry updated).*
 
     git clone https://github.com/majster-pl/open-link-logger.git && cd open-link-logger
 
