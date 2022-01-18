@@ -26,6 +26,10 @@ app.get("/img/favicon-512.png", (req, res) => {
   res.sendFile("./img/favicon-512.png", { root: __dirname });
 });
 
+app.get("/img/logo-with-title.png", (req, res) => {
+  res.sendFile("./img/logo-with-title.png", { root: __dirname });
+});
+
 app.use((req, res) => {
   res.sendFile("./views/404.html", { root: __dirname });
 });
