@@ -22,6 +22,10 @@ app.get("/css/main.min.css", (req, res) => {
   res.sendFile("./css/main.min.css", { root: __dirname });
 });
 
+app.get("/img/favicon-512.png", (req, res) => {
+  res.sendFile("./img/favicon-512.png", { root: __dirname });
+});
+
 app.use((req, res) => {
   res.sendFile("./views/404.html", { root: __dirname });
 });
