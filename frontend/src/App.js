@@ -1,6 +1,7 @@
 import { Navbar, Nav, Container, NavDropdown, Button } from "react-bootstrap";
 import { BrowserRouter as Router, Route, Routes, NavLink, Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
+import NotFound from "./views/404";
 
 function App() {
   return (
@@ -42,9 +43,7 @@ function App() {
                 </Nav.Link>
               </Nav>
               <Nav>
-                <Nav.Link
-                  onClick={() => alert("Refresh data!")}
-                >
+                <Nav.Link onClick={() => alert("Refresh data!")}>
                   Refresh
                 </Nav.Link>
                 <Nav.Link as={NavLink} to="/about">
@@ -64,6 +63,7 @@ function App() {
               <Route path="/all-data" element={<>ALL DATA!</>}></Route>
               <Route path="/table" element={<>TABLE PAGE</>}></Route>
               <Route path="/about" element={<>About page</>}></Route>
+              <Route path="*" element={<NotFound />}></Route>
             </Routes>
           </Container>
         </Container>
