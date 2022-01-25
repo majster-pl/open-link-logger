@@ -13,9 +13,10 @@ import {
   NavLink,
   Link,
 } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.min.css";
-import NotFound from "./views/404";
 import { useState } from "react";
+import NotFound from "./views/404";
+import Home from "./views/Home";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
   const [show, setShow] = useState(false);
@@ -74,7 +75,7 @@ function App() {
           <Container>
             <Container>
               <Routes>
-                <Route path="/" element={<>Home page</>}></Route>
+                <Route path="/" element={<Home />}></Route>
                 <Route path="/last-24h" element={<>Last 24h !</>}></Route>
                 <Route path="/last-3days" element={<>Last 3 days!</>}></Route>
                 <Route path="/last-week" element={<>Last week!</>}></Route>
