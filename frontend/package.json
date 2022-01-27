@@ -19,8 +19,8 @@
   "scripts": {
     "start": "react-scripts start",
     "copy": "rm -rf ../app/build && rsync -rv build ../app && rsync -rv ../open-link-logger.py ../app/scripts/",
-    "copy:db": "rsync -rv ../sample/data_blank.json ../app/data/db.json",
-    "build": "react-scripts build && npm run copy"
+    "copy:db": "rsync -rv ../sample/* ../app/data/",
+    "build": "react-scripts build && npm run copy && npm run copy:db"
   },
   "eslintConfig": {
     "extends": [
