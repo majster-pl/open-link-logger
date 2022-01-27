@@ -1,6 +1,7 @@
 node_modules
-
+app
 open-link.conf
 crontab_jobs.log
 data.json
-OLL-web-server.pid
+server-web.pid
+server-api.pid

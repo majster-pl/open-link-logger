@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from ast import While
+from optparse import OptionParser
 from asyncio.log import logger
 import subprocess
 import json
@@ -11,6 +12,26 @@ import sys
 import time
 import os.path
 from shutil import copyfile
+
+# parser = argparse.ArgumentParser(
+parser = OptionParser(
+    description='Open Link Logger, this script will test your internet connection and save data locally for it to be nicely presented in browser.')
+
+parser.add_option("-s", "--stop", action="store_true", dest="stop_server", default=False,
+                  help="Stops services running in the background")
+
+parser.add_option("-f", "--fresh", action="store_true", dest="fresh", default=False,
+                  help="Start setup wizard")
+
+(options, args) = parser.parse_args()
+
+# Kill web server and API server when -s or --stop option used.
+if (options.stop_server):
+    print("Sotpping services...")
+    os.system("kill -9 $(cat server-api.pid)")
+    os.system("kill -9 $(cat server-web.pid)")
+    sys.exit()
+
 
 # Application confing
 config = configparser.ConfigParser()
@@ -36,9 +57,12 @@ data_json_path = config['Default']['data-path']
 first_run = config['Default']['first-run']
 test_reiteration = config['Default']['test-reiteration']
 port = config['Default']['port']
+port_api = int(config['Default']['port']) + 1
 test_count = 0
 
 # define termianl colors
+
+
 class bcolors:
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
@@ -60,8 +84,10 @@ logging.basicConfig(
 logging.info('Starting Open-Link-Logger...')
 
 # function to check if scrip running for first time, if so run setup guide
+
+
 def check_if_first_run():
-    if first_run == "true":
+    if first_run == "true" or options.fresh == True:
         print(f'{bcolors.OKGREEN}\
 ####################################################################################### \n\
 #                                                                                    ##\n\
@@ -94,7 +120,8 @@ any warranty on any kind!\n\n\
                     f"[1/4] What port do you want a web server to run on?\n{bcolors.HEADER}[3900]: {bcolors.ENDC}") or 3900)
                 break
             except ValueError:
-                print(f"{bcolors.FAIL}Please enter valid port number...{bcolors.ENDC}")  
+                print(
+                    f"{bcolors.FAIL}Please enter valid port number...{bcolors.ENDC}")
 
         if q_port:
             print(f'Port set to: {bcolors.OKGREEN}{q_port}{bcolors.ENDC}')
@@ -103,10 +130,10 @@ any warranty on any kind!\n\n\
             print(f'Port set to: {bcolors.OKGREEN}{q_port}{bcolors.ENDC}')
         config['Default']['port'] = str(q_port)
 
-        # path to data.json file
-        Default_path = os.getcwd() + "/data.json"
+        # path to db.json file
+        Default_path = os.getcwd() + "/data/db.json"
         q_data_path = input(
-f"\n[2/4] Specify the path where you want data to be collected:\n\
+            f"\n[2/4] Specify the path where you want data to be collected:\n\
 {bcolors.HEADER}[{Default_path}]{bcolors.ENDC}: ")
         if q_data_path:
             print(
@@ -121,10 +148,11 @@ f"\n[2/4] Specify the path where you want data to be collected:\n\
         default_reiteration = 3
         while True:
             try:
-                q_reiteration = int(input(f"\n[3/4] How many times you want test to retry connect to server before exiting the app (if added to crontab, sometimes too many tests running at the same time from differet locations and blocking servers from respodning)\n{bcolors.HEADER}[{default_reiteration}] {bcolors.ENDC}: ") or 3)
+                q_reiteration = int(input(
+                    f"\n[3/4] How many times you want test to retry connect to server before exiting the app (if added to crontab, sometimes too many tests running at the same time from differet locations and blocking servers from respodning)\n{bcolors.HEADER}[{default_reiteration}] {bcolors.ENDC}: ") or 3)
                 break
             except ValueError:
-                print(f"{bcolors.FAIL}Please enter integer only...{bcolors.ENDC}")  
+                print(f"{bcolors.FAIL}Please enter integer only...{bcolors.ENDC}")
         if not q_reiteration:
             q_reiteration = default_reiteration
         print(
@@ -153,7 +181,7 @@ f"\n[2/4] Specify the path where you want data to be collected:\n\
         while True:
             try:
                 q_crontab = int(input(
-f"\n[4/4] Now you can add speedtest to crontab to be lunched automaticaly.\n\
+                    f"\n[4/4] Now you can add speedtest to crontab to be lunched automaticaly.\n\
 Choose one options from below and it will be added to crontab for you.\n\
     1 => {entires_text[1]}\n\
     2 => {entires_text[2]}\n\
@@ -163,7 +191,7 @@ Choose one options from below and it will be added to crontab for you.\n\
     6 => {entires_text[6]}\n{bcolors.HEADER}\
     7 => {entires_text[7]}{bcolors.ENDC}\n\
 {bcolors.HEADER}[7]{bcolors.ENDC}: ") or 7)
-                if q_crontab in range(1,8):
+                if q_crontab in range(1, 8):
                     break
                 else:
                     print(f"{bcolors.FAIL}Invalid selection!{bcolors.ENDC}")
@@ -177,7 +205,7 @@ Choose one options from below and it will be added to crontab for you.\n\
             if not q_crontab == 7:
                 command = f'crontab -l | {{ cat; echo "{entires[q_crontab]} cd {os.getcwd()} && /usr/bin/python3 open-link-logger.py >> crontab_jobs.log 2>&1"; }} | crontab -'
                 print(
-                f'Test will run automatically: {bcolors.OKGREEN} {entires_text[q_crontab]} {bcolors.ENDC}')
+                    f'Test will run automatically: {bcolors.OKGREEN} {entires_text[q_crontab]} {bcolors.ENDC}')
 
         # Ask user if happy to save data.
         while True:
@@ -190,17 +218,20 @@ Choose one options from below and it will be added to crontab for you.\n\
             else:
                 if not q_crontab == 7:
                     os.system(command)
-                    print(f'\n{bcolors.WARNING}New entry added to crontab, to edit run "crontab -e" in terminal{bcolors.ENDC}')
+                    print(
+                        f'\n{bcolors.WARNING}New entry added to crontab, to edit run "crontab -e" in terminal{bcolors.ENDC}')
 
                 config['Default']['first-run'] = 'false'
                 with open('open-link.conf', 'w') as configfile:
                     config.write(configfile)
                 print(
-f'{bcolors.OKGREEN}\nYou are all set and ready to go!\n\
+                    f'{bcolors.OKGREEN}\nYou are all set and ready to go!\n\
 To get your first test run ./open-link-logger.py again ;) - Enjoy!{bcolors.ENDC}')
                 sys.exit()
 
-# Function to check if local server running if not start it 
+# Function to check if local server running if not start it
+
+
 def start_local_webserver():
     # try to connect to local server if running don't start another server
     try:
@@ -217,23 +248,56 @@ def start_local_webserver():
         logging.info(f"Starting local server on port: {port}")
         # print(f"Starting local server...")
         process = subprocess.Popen(
-            ["node", "app.js", "-p", port, "-d", data_json_path], stdout=None, stderr=None)
+            ["node", "./scripts/server.js", "-p", port, "-d", data_json_path], stdout=None, stderr=None)
         # Write PID file
-        pidfilename = os.path.join(os.getcwd(), 'OLL-web-server.pid')
+        pidfilename = os.path.join(os.getcwd(), 'server-web.pid')
         pidfile = open(pidfilename, 'w')
         pidfile.write(str(process.pid))
         pidfile.close()
         return
 
-# function to append results in data.json file
+# Function to check if API server is running, if not start it
+
+
+def start_local_api_server():
+    # try to connect to local server if running don't start another server
+    try:
+        get = requests.get(f'http://localhost:{port_api}')
+        if get.status_code == 200:
+            logging.info(
+                f"API Server already running on: http://localhost:{port_api}")
+            return
+        else:
+            logging.warning(
+                f"Posible problem with API server on: http://localhost:{port_api}")
+            logging.warning(f"Error code: {get.status_code}")
+            return
+    except:
+        logging.info(f"Starting local API server on port: {port_api}")
+        # print(f"Starting local server...")
+        api_process = subprocess.Popen(
+            # node /home/szymon/Apps/open-link-logger/backend/node_modules/.bin/json-server --watch ./data/db.json -p=3901 -q
+            ["node", "/home/szymon/Apps/open-link-logger/backend/node_modules/.bin/json-server", "--watch", "./data/db.json", f"-p={str(port_api)}", "-q"], stdout=None, stderr=None)
+        # ["npm", "run", "start:json-server", "--", f"-p={str(port_api)}", "-q" ], stdout=None, stderr=None)
+        # Write PID file
+        pidfilename = os.path.join(os.getcwd(), 'server-api.pid')
+        pidfile = open(pidfilename, 'w')
+        pidfile.write(str(api_process.pid))
+        pidfile.close()
+        return
+
+# function to append results in db.json file
+
+
 def save_results(new_data, filename=data_json_path):
-    # check if data.json file exist if not copy from template
+    # check if db.json file exist if not copy from template
     if not os.path.exists(data_json_path):
-        logging.info('New data.json created.')
-        copyfile('./sample/data_blank.json', data_json_path)
+        logging.info('New db.json created.')
+        copyfile('../sample/data_blank.json', data_json_path)
 
     with open(filename, 'r+') as file:
         file_data = json.load(file)
+        new_data['id'] = int(file_data['speedtest'][-1]["id"]) + 1
         file_data["speedtest"].append(new_data)
         file.seek(0)
         # convert back to json.
@@ -241,6 +305,8 @@ def save_results(new_data, filename=data_json_path):
         logging.info(f"Results added to {filename}")
 
 # run speedtest with parameters from config file
+
+
 def run_speedtest_cli():
     global test_count
     test_count += 1
@@ -262,6 +328,7 @@ def run_speedtest_cli():
 
 check_if_first_run()
 start_local_webserver()
+start_local_api_server()
 result = run_speedtest_cli()
 
 # if unable to run test, retry number of times from config.

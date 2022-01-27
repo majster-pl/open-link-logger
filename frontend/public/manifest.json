@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Open Link Logger",
+  "name": "Simple software to test your internet connection and display data in web browser",
   "icons": [
     {
       "src": "favicon.ico",

@@ -1,5 +1,5 @@
 {
-  "name": "frontend",
+  "name": "Open Link Logger - Frontend",
   "version": "0.1.0",
   "private": true,
   "homepage": "./",
@@ -18,10 +18,9 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "copy": "rm -rf ../backend/build && cp -r build ../backend",
-    "build": "react-scripts build && npm run copy",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "copy": "rm -rf ../app/build && rsync -rv build ../app && rsync -rv ../open-link-logger.py ../app/scripts/",
+    "copy:db": "rsync -rv ../sample/data_blank.json ../app/data/db.json",
+    "build": "react-scripts build && npm run copy"
   },
   "eslintConfig": {
     "extends": [
