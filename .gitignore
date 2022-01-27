@@ -1,5 +1,8 @@
 node_modules
-app
+app/build
+app/data
+app/node_modules
+app/open-link.conf
 open-link.conf
 crontab_jobs.log
 data.json

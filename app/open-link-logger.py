@@ -1,0 +1,1 @@
+/home/szymon/Apps/test/open-link-logger/app/scripts/open-link-logger.py
