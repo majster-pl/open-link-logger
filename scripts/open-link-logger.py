@@ -57,7 +57,7 @@ data_json_path = config['Default']['data-path']
 first_run = config['Default']['first-run']
 test_reiteration = config['Default']['test-reiteration']
 port = config['Default']['port']
-port_api = int(config['Default']['port']) + 1
+port_api = 4981
 test_count = 0
 
 # define termianl colors
@@ -278,9 +278,7 @@ def start_local_api_server():
         _path = os.path.join(os.getcwd(), "node_modules",
                              ".bin", "json-server")
         api_process = subprocess.Popen(
-            # node /home/szymon/Apps/open-link-logger/backend/node_modules/.bin/json-server --watch ./data/db.json -p=3901 -q
             ["node", _path, "--watch", "./data/db.json", f"-p={str(port_api)}", "-q"], stdout=None, stderr=None)
-        # ["npm", "run", "start:json-server", "--", f"-p={str(port_api)}", "-q" ], stdout=None, stderr=None)
         # Write PID file
         pidfilename = os.path.join(os.getcwd(), 'server-api.pid')
         pidfile = open(pidfilename, 'w')

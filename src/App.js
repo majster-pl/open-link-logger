@@ -16,6 +16,7 @@ import {
 import { useState } from "react";
 import NotFound from "./views/404";
 import Home from "./views/Home";
+import Chart24 from "./views/Chart24h";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
@@ -76,7 +77,7 @@ function App() {
             <Container>
               <Routes>
                 <Route path="/" element={<Home />}></Route>
-                <Route path="/last-24h" element={<>Last 24h !</>}></Route>
+                <Route path="/last-24h" element={<Chart24 />}></Route>
                 <Route path="/last-3days" element={<>Last 3 days!</>}></Route>
                 <Route path="/last-week" element={<>Last week!</>}></Route>
                 <Route path="/all-data" element={<>ALL DATA!</>}></Route>
@@ -116,7 +117,8 @@ function App() {
             If you have any troubles using a software please report a issue on{" "}
             <a
               href="https://github.com/majster-pl/open-link-logger"
-              target={"_blank"}
+              target="_blank"
+              ref="noreferrer"
             >
               github
             </a>{" "}
