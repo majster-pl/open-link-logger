@@ -248,7 +248,7 @@ def start_local_webserver():
         logging.info(f"Starting local server on port: {port}")
         # print(f"Starting local server...")
         process = subprocess.Popen(
-            ["node", "./scripts/server.js", "-p", port, "-d", data_json_path], stdout=None, stderr=None)
+            ["node", "./server/server.js", "-p", port, "-d", data_json_path], stdout=None, stderr=None)
         # Write PID file
         pidfilename = os.path.join(os.getcwd(), 'server-web.pid')
         pidfile = open(pidfilename, 'w')
@@ -275,10 +275,11 @@ def start_local_api_server():
     except:
         logging.info(f"Starting local API server on port: {port_api}")
         # print(f"Starting local server...")
-        _path = os.path.join(os.getcwd(), "node_modules", ".bin", "json-server")
+        _path = os.path.join(os.getcwd(), "node_modules",
+                             ".bin", "json-server")
         api_process = subprocess.Popen(
             # node /home/szymon/Apps/open-link-logger/backend/node_modules/.bin/json-server --watch ./data/db.json -p=3901 -q
-            ["node", _path , "--watch", "./data/db.json", f"-p={str(port_api)}", "-q"], stdout=None, stderr=None)
+            ["node", _path, "--watch", "./data/db.json", f"-p={str(port_api)}", "-q"], stdout=None, stderr=None)
         # ["npm", "run", "start:json-server", "--", f"-p={str(port_api)}", "-q" ], stdout=None, stderr=None)
         # Write PID file
         pidfilename = os.path.join(os.getcwd(), 'server-api.pid')
@@ -298,7 +299,7 @@ def save_results(new_data, filename=data_json_path):
 
     with open(filename, 'r+') as file:
         file_data = json.load(file)
-        try: 
+        try:
             file_data['speedtest'][-1]["id"]
             new_data['id'] = int(file_data['speedtest'][-1]["id"]) + 1
         except:

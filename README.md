@@ -1,4 +1,4 @@
-﻿![enter image description here](https://github.com/majster-pl/open-link-logger/raw/main/img/logo-with-title.png)
+![enter image description here](https://github.com/majster-pl/open-link-logger/raw/main/img/logo-with-title.png)
 
 # Open-Link-Logger
 

@@ -1,34 +1,44 @@
 {
-  "name": "open-link-logger",
-  "version": "1.0.0",
-  "description": "Simple application to display internet speed test results in charts",
-  "main": "app.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/majster-pl/open-link-logger.git"
-  },
-  "keywords": [
-    "net",
-    "speed",
-    "test",
-    "speedtest",
-    "log",
-    "logs",
-    "logger",
-    "internet"
-  ],
-  "author": "Szymon Waliczek",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/majster-pl/open-link-logger/issues"
-  },
-  "homepage": "https://github.com/majster-pl/open-link-logger#readme",
+  "name": "Open Link Logger - Frontend",
+  "version": "0.1.0",
+  "private": true,
+  "homepage": "./",
   "dependencies": {
+    "@testing-library/jest-dom": "^5.16.1",
+    "@testing-library/react": "^12.1.2",
+    "@testing-library/user-event": "^13.5.0",
     "bootstrap": "^5.1.3",
-    "express": "^4.17.2",
-    "minimist": "^1.2.5"
+    "react": "^17.0.2",
+    "react-bootstrap": "^2.1.1",
+    "react-dom": "^17.0.2",
+    "react-gauge-chart": "^0.4.0",
+    "react-router-dom": "^6.2.1",
+    "react-scripts": "5.0.0",
+    "web-vitals": "^2.1.3"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "remove:build": "rm -rf ./app/build && rm -rf ./app/data && rm -rf ./app/node_modules && rm -rf ./app/scripts && rm -rf ./app/server",
+    "copy": "rsync -rv build ./app && rsync -rv ./scripts/open-link-logger.py ./app/ && rsync -rv ./scripts/server.js ./app/server/",
+    "copy:db": "rsync -rv ./sample/* ./app/data/",
+    "build": "react-scripts build && npm run remove:build && npm run copy && npm run copy:db && cd ./app && npm i"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }
