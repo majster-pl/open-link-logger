@@ -2,6 +2,7 @@ build
 data
 node_modules
 scripts
+server
 server-web.pid
 server-api.pid
 open-link.conf

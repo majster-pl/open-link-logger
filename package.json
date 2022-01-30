@@ -19,7 +19,7 @@
   "scripts": {
     "start": "react-scripts start",
     "remove:build": "rm -rf ./app/build && rm -rf ./app/data && rm -rf ./app/node_modules && rm -rf ./app/scripts && rm -rf ./app/server",
-    "copy": "rsync -rv build ./app && rsync -rv ./scripts/open-link-logger.py ./app/ && rsync -rv ./scripts/server.js ./app/server/",
+    "copy": "rsync -rv build ./app && rsync -rv ./scripts/open-link-logger.py ./app/ && rsync -rv ./scripts/server.js ./app/server/ && rsync -rv ./scripts/speedtest-cli.py ./app/scripts/",
     "copy:db": "rsync -rv ./sample/* ./app/data/",
     "build": "react-scripts build && npm run remove:build && npm run copy && npm run copy:db && cd ./app && npm i"
   },

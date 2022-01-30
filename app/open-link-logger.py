@@ -318,7 +318,7 @@ def run_speedtest_cli():
     test_count += 1
     logging.info(f'Speedtest attempt no: {test_count}/{test_reiteration}')
     proc = subprocess.Popen(
-        ['speedtest-cli', '--timeout', '30', '--json'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        ['./scripts/speedtest-cli2', '--timeout', '30', '--json'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     (stdout, stderr) = proc.communicate()
     pros_status = proc.wait()
 
