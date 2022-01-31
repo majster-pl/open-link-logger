@@ -1,17 +1,31 @@
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import Chart from "react-apexcharts";
 import moment from "moment";
+import apiClient from "../service/api";
+import { useState, useEffect } from "react";
 
 function Home() {
+  const [downloads, setDownloads] = useState([]);
+  const [uploads, setUploads] = useState([]);
+  const [timestamps, setTimestamps] = useState([]);
+  const [pings, setPings] = useState([]);
+
   const series = [
     {
-      name: "series1",
-      data: [31, 40, 28, 51, 42, 109, 100],
+      name: "Download",
+      data: downloads,
+      type: "area",
     },
     {
-      name: "series2",
-      data: [11, 32, 45, 32, 34, 52, 41],
+      name: "Uploads",
+      data: uploads,
+      type: "area",
+    },
+    {
+      name: "Ping",
+      type: "column",
+      data: pings,
     },
   ];
 
@@ -28,29 +42,79 @@ function Home() {
     },
     xaxis: {
       type: "datetime",
-      categories: [
-        "2018-09-19T00:00:00.000Z",
-        "2018-09-19T01:30:00.000Z",
-        "2018-09-19T02:30:00.000Z",
-        "2018-09-19T03:30:00.000Z",
-        "2018-09-19T04:30:00.000Z",
-        "2018-09-19T05:30:00.000Z",
-        "2018-09-19T06:30:00.000Z",
-      ],
+      categories: timestamps,
+    },
+    yaxis: {
+      title: {
+        text: "Speed / ping",
+      },
+      min: 0,
     },
     tooltip: {
       x: {
-        format: "dd/MM/yy HH:mm",
+        format: "dd-MMM-yyyy HH:mm",
+      },
+    },
+    plotOptions: {
+      bar: {
+        columnWidth: "3%",
       },
     },
   };
+
+  const getDownloadData = () => {
+    const chart_data_download = [];
+    const chart_data_upload = [];
+    const chart_data_time = [];
+    const chart_data_ping = [];
+
+    apiClient
+      .get("/speedtest/")
+      .then((response) => {
+        console.log(response.data);
+        // filter data with last 24h
+        const filtered_data = response.data.filter(function (i, n) {
+          return moment().subtract(24, "hours") < moment(new Date(i.timestamp));
+        });
+
+        // timestamp
+        filtered_data.map((item) => {
+          return chart_data_time.push(
+            moment(new Date(item.timestamp)).format("DD-MMM-YYYY HH:mm")
+          );
+        });
+        // downloads
+        filtered_data.map((item) => {
+          return chart_data_download.push((item.download / 1000000).toFixed(2));
+        });
+        // uploads
+        filtered_data.map((item) => {
+          return chart_data_upload.push((item.upload / 1000000).toFixed(2));
+        });
+        // ping
+        filtered_data.map((item) => {
+          return chart_data_ping.push((item.ping).toFixed(2));
+        });
+
+        setTimestamps(chart_data_time);
+        setDownloads(chart_data_download);
+        setUploads(chart_data_upload);
+        setPings(chart_data_ping);
+      })
+      .catch((err) => {
+        setDownloads(null);
+      });
+  };
+
+  useEffect(() => {
+    getDownloadData();
+  }, []);
 
   return (
     <Container className="text-center mt-3">
       <h1>24h Chart </h1>
       <h4>{moment().format("DD MMM YYYY")}</h4>
       <Chart options={options} series={series} type="area" height={350} />
-    
     </Container>
   );
 }
