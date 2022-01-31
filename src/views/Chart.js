@@ -1,15 +1,16 @@
 import React from "react";
-import { Container } from "react-bootstrap";
+import { Container, DropdownButton, Dropdown } from "react-bootstrap";
 import Chart from "react-apexcharts";
 import moment from "moment";
 import apiClient from "../service/api";
 import { useState, useEffect } from "react";
 
-function Home() {
+function Home({ days }) {
   const [downloads, setDownloads] = useState([]);
   const [uploads, setUploads] = useState([]);
   const [timestamps, setTimestamps] = useState([]);
   const [pings, setPings] = useState([]);
+  const [daysSelected, setDaysSelected] = useState(days);
 
   const series = [
     {
@@ -73,8 +74,16 @@ function Home() {
       .then((response) => {
         console.log(response.data);
         // filter data with last 24h
+        // const filtered_data = response.data;
         const filtered_data = response.data.filter(function (i, n) {
-          return moment().days(-3) < moment(new Date(i.timestamp));
+          if (daysSelected !== null) {
+            return (
+              moment().subtract(daysSelected * 24, "hours") <
+              moment(new Date(i.timestamp))
+            );
+          } else {
+            return i;
+          }
         });
 
         // timestamp
@@ -106,20 +115,58 @@ function Home() {
       });
   };
 
+  const chartDescription = () => {
+    if (daysSelected === 0) {
+      return <h1>Displaying all collected data</h1>;
+    } else {
+      let days_text = daysSelected == 1 ? "hours" : "days";
+
+      return (
+        <div>
+          <h1>
+            Last {daysSelected == 1 ? 24 : daysSelected} {days_text}
+          </h1>
+          <h4>
+            From:{" "}
+            <span className="fw-light">
+              {moment()
+                .days(-daysSelected + 1)
+                .format("DD MMM YYYY")}
+            </span>{" "}
+            To:{" "}
+            <span className="fw-light">{moment().format("DD MMM YYYY")}</span>
+          </h4>
+        </div>
+      );
+    }
+  };
+
   useEffect(() => {
     getDownloadData();
-  }, []);
+  }, [daysSelected]);
 
   return (
     <Container className="text-center mt-3">
-      <h1>Last 3 days </h1>
-      <h4>
-        From:{" "}
-        <span className="fw-light">
-          {moment().days(-3).format("DD MMM YYYY")}
-        </span>{" "}
-        To: <span className="fw-light">{moment().format("DD MMM YYYY")}</span>
-      </h4>
+      {chartDescription()}
+      <DropdownButton
+        className="text-end mb-3"
+        variant="info"
+        id="dropdown-basic-button"
+        title="Filter"
+      >
+        <Dropdown.Item onClick={() => setDaysSelected(1)}>
+          Last 24h
+        </Dropdown.Item>
+        <Dropdown.Item onClick={() => setDaysSelected(3)}>
+          Last 3 days
+        </Dropdown.Item>
+        <Dropdown.Item onClick={() => setDaysSelected(7)}>
+          Last Week
+        </Dropdown.Item>
+        <Dropdown.Item onClick={() => setDaysSelected(0)}>
+          All Data
+        </Dropdown.Item>
+      </DropdownButton>
       <Chart options={options} series={series} type="area" height={350} />
     </Container>
   );
