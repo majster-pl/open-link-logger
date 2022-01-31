@@ -16,8 +16,9 @@ import {
 import { useState } from "react";
 import NotFound from "./views/404";
 import Home from "./views/Home";
-import Chart24 from "./views/Chart-24h";
-import Chart_3days from "./views/Chart-3days"
+import Chart24 from "./views/Chart24h";
+import Chart3days from "./views/Chart3days";
+import ChartWeek from "./views/ChartWeek";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
@@ -46,7 +47,7 @@ function App() {
                   <Nav.Link as={NavLink} to="/">
                     Home
                   </Nav.Link>
-                  <NavDropdown title="Chart" id="collasible-nav-dropdown">
+                  <NavDropdown title="Charts" id="collasible-nav-dropdown">
                     <NavDropdown.Item as={NavLink} to="/last-24h">
                       Last 24h
                     </NavDropdown.Item>
@@ -79,8 +80,8 @@ function App() {
               <Routes>
                 <Route path="/" element={<Home />}></Route>
                 <Route path="/last-24h" element={<Chart24 />}></Route>
-                <Route path="/last-3days" element={<Chart_3days />}></Route>
-                <Route path="/last-week" element={<>Last week!</>}></Route>
+                <Route path="/last-3days" element={<Chart3days />}></Route>
+                <Route path="/last-week" element={<ChartWeek />}></Route>
                 <Route path="/all-data" element={<>ALL DATA!</>}></Route>
                 <Route path="/table" element={<>TABLE PAGE</>}></Route>
                 <Route path="/about" element={<>About page</>}></Route>
