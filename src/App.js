@@ -16,7 +16,8 @@ import {
 import { useState } from "react";
 import NotFound from "./views/404";
 import Home from "./views/Home";
-import Chart24 from "./views/Chart24h";
+import Chart24 from "./views/Chart-24h";
+import Chart_3days from "./views/Chart-3days"
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
@@ -78,7 +79,7 @@ function App() {
               <Routes>
                 <Route path="/" element={<Home />}></Route>
                 <Route path="/last-24h" element={<Chart24 />}></Route>
-                <Route path="/last-3days" element={<>Last 3 days!</>}></Route>
+                <Route path="/last-3days" element={<Chart_3days />}></Route>
                 <Route path="/last-week" element={<>Last week!</>}></Route>
                 <Route path="/all-data" element={<>ALL DATA!</>}></Route>
                 <Route path="/table" element={<>TABLE PAGE</>}></Route>
