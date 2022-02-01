@@ -72,7 +72,7 @@ function Home({ days }) {
     apiClient
       .get("/speedtest/")
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         // filter data with last 24h
         // const filtered_data = response.data;
         const filtered_data = response.data.filter(function (i, n) {
