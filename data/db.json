@@ -1,4 +1,39 @@
 {
-  "speedtest": [
-  ]
+    "speedtest": [
+        {
+            "download": 92888106.1961084,
+            "upload": 11689214.259753358,
+            "ping": 52.859,
+            "server": {
+                "url": "http://speedtestmera.vs.mythic-beasts.com:8080/speedtest/upload.php",
+                "lat": "51.5171",
+                "lon": "-0.1062",
+                "name": "London",
+                "country": "United Kingdom",
+                "cc": "GB",
+                "sponsor": "Mythic Beasts Ltd",
+                "id": "32806",
+                "host": "speedtestmera.vs.mythic-beasts.com:8080",
+                "d": 197.72526941323247,
+                "latency": 52.859
+            },
+            "timestamp": "2022-02-01T23:13:40.785236Z",
+            "bytes_sent": 15245312,
+            "bytes_received": 120507556,
+            "share": null,
+            "client": {
+                "ip": "188.29.206.97",
+                "lat": "51.5927",
+                "lon": "-2.9637",
+                "isp": "Three",
+                "isprating": "3.7",
+                "rating": "0",
+                "ispdlavg": "0",
+                "ispulavg": "0",
+                "loggedin": "0",
+                "country": "GB"
+            },
+            "id": 1
+        }
+    ]
 }
