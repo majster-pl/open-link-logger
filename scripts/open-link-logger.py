@@ -278,7 +278,7 @@ def start_local_api_server():
         _path = os.path.join(os.getcwd(), "node_modules",
                              ".bin", "json-server")
         api_process = subprocess.Popen(
-            ["node", _path, "--watch", "./data/db.json", f"-p={str(port_api)}", "-q"], stdout=None, stderr=None)
+            ["node", _path, "-H", "0.0.0.0", "--watch", "./data/db.json", f"-p={str(port_api)}", "-q"], stdout=None, stderr=None)
         # Write PID file
         pidfilename = os.path.join(os.getcwd(), 'server-api.pid')
         pidfile = open(pidfilename, 'w')
