@@ -12,6 +12,7 @@ import sys
 import time
 import os.path
 from shutil import copyfile
+from pathlib import Path
 
 # parser = argparse.ArgumentParser(
 parser = OptionParser(
@@ -292,9 +293,13 @@ def start_local_api_server():
 def save_results(new_data, filename=data_json_path):
     # check if db.json file exist if not copy from template
     if not os.path.exists(data_json_path):
+        data = {"speedtest": []}
+        Path(os.path.join(os.getcwd(), 'data')
+             ).mkdir(parents=True, exist_ok=True)
+        with open('./data/db.json', 'w') as f:
+            json.dump(data, f)
         logging.info('New db.json created.')
-        copyfile('../sample/data_blank.json', data_json_path)
-
+        
     with open(filename, 'r+') as file:
         file_data = json.load(file)
         try:
