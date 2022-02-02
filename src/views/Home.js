@@ -121,7 +121,7 @@ function Home() {
             nrOfLevels={14}
             colors={["#5BE12C", "#F5CD19", "#EA4228"]}
             arcWidth={0.3}
-            percent={Number(avrUpload) / 100}
+            percent={Number(avrUpload) / 100 > 1 ? 1 : Number(avrUpload)}
             textColor="#212529"
             needleColor="#ffc107"
             animateDuration={6000}
