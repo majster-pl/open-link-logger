@@ -9,13 +9,8 @@
 
 Open Link Logger is a simple python script which will test your internet connection speed and display results in browser as chart. It has been tested on Ubuntu based Linux distributions.
 
-
-
-## Source Code
-You are currently looking at already build project, if you are looking for a source code please go to branch **[main](https://github.com/majster-pl/open-link-logger)** and fill free to contribute or modifie to your needs.
   
-
-  test
+  
 
 ## Requirements
 
