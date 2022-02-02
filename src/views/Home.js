@@ -98,8 +98,10 @@ function Home() {
             className="mt-4"
             nrOfLevels={14}
             colors={["#5BE12C", "#F5CD19", "#EA4228"]}
-            arcWidth={0.30}
-            percent={Number(avrDownload) / 100}
+            arcWidth={0.3}
+            percent={
+              Number(avrDownload) / 100 > 1 ? 1 : Number(avrDownload) / 100
+            }
             textColor="#212529"
             needleColor="#ffc107"
             needleBaseColor="#212529"
