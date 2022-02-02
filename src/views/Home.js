@@ -34,57 +34,56 @@ function Home() {
 
     return [Math.max(fileSizeInBytes, 0.1).toFixed(1), byteUnits[i]];
   };
-
-  const getAvrageData = () => {
-    const avrage_download = [];
-    const avrage_upload = [];
-    const avrage_ping = [];
-
-    apiClient
-      .get("/speedtest/")
-      .then((response) => {
-        const filtered_data = response.data;
-
-        // downloads
-        filtered_data.map((item) => {
-          let i = item.download.toFixed(2);
-          // let e = getReadableFileSizeString(item.download, null);
-          return avrage_download.push(Number(i));
-        });
-        // uploads
-        filtered_data.map((item) => {
-          let i = item.upload.toFixed(2);
-          return avrage_upload.push(Number(i));
-        });
-        // ping
-        filtered_data.map((item) => {
-          return avrage_ping.push(Number(item.ping.toFixed(2)));
-        });
-
-        setTimeout(() => {
-          setAvrDonload(
-            getReadableFileSizeString(average(avrage_download).toFixed())[0]
-          );
-          setAvrDonloadUnit(
-            getReadableFileSizeString(average(avrage_download).toFixed())[1]
-          );
-
-          setAvrUpload(
-            getReadableFileSizeString(average(avrage_upload).toFixed())[0]
-          );
-          setAvrUploadUnit(
-            getReadableFileSizeString(average(avrage_upload).toFixed())[1]
-          );
-
-          setAvrPing(average(avrage_ping).toFixed());
-        }, 1500);
-      })
-      .catch((err) => {
-        console.log("Error: ", err);
-      });
-  };
-
   useEffect(() => {
+    const getAvrageData = () => {
+      const avrage_download = [];
+      const avrage_upload = [];
+      const avrage_ping = [];
+
+      apiClient
+        .get("/speedtest/")
+        .then((response) => {
+          const filtered_data = response.data;
+
+          // downloads
+          filtered_data.map((item) => {
+            let i = item.download.toFixed(2);
+            // let e = getReadableFileSizeString(item.download, null);
+            return avrage_download.push(Number(i));
+          });
+          // uploads
+          filtered_data.map((item) => {
+            let i = item.upload.toFixed(2);
+            return avrage_upload.push(Number(i));
+          });
+          // ping
+          filtered_data.map((item) => {
+            return avrage_ping.push(Number(item.ping.toFixed(2)));
+          });
+
+          setTimeout(() => {
+            setAvrDonload(
+              getReadableFileSizeString(average(avrage_download).toFixed())[0]
+            );
+            setAvrDonloadUnit(
+              getReadableFileSizeString(average(avrage_download).toFixed())[1]
+            );
+
+            setAvrUpload(
+              getReadableFileSizeString(average(avrage_upload).toFixed())[0]
+            );
+            setAvrUploadUnit(
+              getReadableFileSizeString(average(avrage_upload).toFixed())[1]
+            );
+
+            setAvrPing(average(avrage_ping).toFixed());
+          }, 1500);
+        })
+        .catch((err) => {
+          console.log("Error: ", err);
+        });
+    };
+
     getAvrageData();
   }, []);
 

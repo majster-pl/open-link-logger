@@ -2,7 +2,6 @@ import {
   Navbar,
   Nav,
   Container,
-  NavDropdown,
   Alert,
   Offcanvas,
 } from "react-bootstrap";
@@ -53,7 +52,7 @@ function App() {
                   </Nav.Link>
                 </Nav>
                 <Nav>
-                  <Nav.Link onClick={() => alert("Refresh data!")}>
+                  <Nav.Link onClick={() => window.location.reload()}>
                     Refresh
                   </Nav.Link>
                   <Nav.Link onClick={handleShow}>About</Nav.Link>
@@ -102,8 +101,7 @@ function App() {
             If you have any troubles using a software please report a issue on{" "}
             <a
               href="https://github.com/majster-pl/open-link-logger"
-              target="_blank"
-              ref="noreferrer"
+              rel="noopener"
             >
               github
             </a>{" "}
