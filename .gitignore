@@ -5,7 +5,11 @@
 /.pnp
 .pnp.js
 
-app
+app/*
+!app/package-lock.json
+!app/package.json
+!app/.gitignore
+!app/README.md
 
 # production
 /build
