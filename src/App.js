@@ -52,21 +52,21 @@ function App() {
               <Navbar.Toggle aria-controls="responsive-navbar-nav" />
               <Navbar.Collapse id="responsive-navbar-nav">
                 <Nav className="me-auto">
-                  <Nav.Link eventKey="nav1" as={NavLink} to="/">
+                  <Nav.Link eventKey={1} as={NavLink} to="/">
                     Home
                   </Nav.Link>
-                  <Nav.Link eventKey="nav2" as={NavLink} to="/chart">
+                  <Nav.Link eventKey={2} as={NavLink} to="/chart">
                     Chart
                   </Nav.Link>
-                  <Nav.Link eventKey="nav3" as={NavLink} to="/table">
+                  <Nav.Link eventKey={3} as={NavLink} to="/table">
                     Table
                   </Nav.Link>
                 </Nav>
                 <Nav>
-                  <Nav.Link eventKey="nav4" onClick={() => window.location.reload()}>
+                  <Nav.Link eventKey={4} onClick={() => window.location.reload()}>
                     Refresh
                   </Nav.Link>
-                  <Nav.Link eventKey="nav5" onClick={handleShow}>
+                  <Nav.Link eventKey={5} onClick={handleShow}>
                     About
                   </Nav.Link>
                 </Nav>
@@ -180,7 +180,7 @@ function App() {
 
               <Modal.Body>
                 <p>Error occurred while loading data...</p>
-                <Alert eventKey="alert1" variant="danger">
+                <Alert variant="danger">
                   <p className="text-break">{loadingErrorMsg}</p>
                 </Alert>
               </Modal.Body>
