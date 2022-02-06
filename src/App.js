@@ -4,6 +4,11 @@ import {
   Container,
   Alert,
   Offcanvas,
+  Modal,
+  Row,
+  Col,
+  Spinner,
+  Button,
 } from "react-bootstrap";
 import {
   BrowserRouter as Router,
@@ -15,7 +20,9 @@ import {
 import { useState } from "react";
 import NotFound from "./views/404";
 import Home from "./views/Home";
-import Chart from "./views/Chart"
+import Chart from "./views/Chart";
+import TablePage from "./views/TablePage";
+
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
@@ -23,6 +30,10 @@ function App() {
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const [loading, setLoading] = useState(true);
+  const [loadingError, setLoadingError] = useState(false);
+  const [loadingErrorMsg, setLoadingErrorMsg] = useState(false);
 
   return (
     <>
@@ -63,9 +74,35 @@ function App() {
           <Container>
             <Container>
               <Routes>
-                <Route path="/" element={<Home />}></Route>
-                <Route path="/chart" element={<Chart days={1} />}></Route>
-                <Route path="/table" element={<>TABLE PAGE</>}></Route>
+                <Route
+                  path="/"
+                  element={
+                    <Home
+                      setLoading={setLoading}
+                      setLoadingErrorMsg={setLoadingErrorMsg}
+                    />
+                  }
+                ></Route>
+                <Route
+                  path="/chart"
+                  element={
+                    <Chart
+                      days={1}
+                      setLoading={setLoading}
+                      setLoadingErrorMsg={setLoadingErrorMsg}
+                    />
+                  }
+                ></Route>
+                <Route
+                  path="/table"
+                  element={
+                    <TablePage
+                      days={1}
+                      setLoading={setLoading}
+                      setLoadingErrorMsg={setLoadingErrorMsg}
+                    />
+                  }
+                ></Route>
                 <Route path="/about" element={<>About page</>}></Route>
                 <Route path="*" element={<NotFound />}></Route>
               </Routes>
@@ -109,6 +146,57 @@ function App() {
           </p>
         </Offcanvas.Body>
       </Offcanvas>
+      <Modal
+        show={loading}
+        onHide={() => setLoading(false)}
+        // backdrop="static"
+        keyboard={false}
+        centered
+        className="modal-loading"
+      >
+        <div>
+          {!loadingErrorMsg ? (
+            <Row xs="auto" className="justify-content-center">
+              <Col>
+                <Spinner animation="grow" variant="success" />
+              </Col>
+              <Col>
+                <Spinner animation="grow" variant="danger" />
+              </Col>
+              <Col>
+                <Spinner animation="grow" variant="warning" />
+              </Col>
+            </Row>
+          ) : (
+            <></>
+          )}
+          {loadingErrorMsg ? (
+            <Modal.Dialog>
+              <Modal.Header closeButton>
+                <Modal.Title>Error</Modal.Title>
+              </Modal.Header>
+
+              <Modal.Body>
+                <p>Error occurred while loading data...</p>
+                <Alert key="alert1" variant="danger">
+                  <p className="text-break">{loadingErrorMsg}</p>
+                </Alert>
+              </Modal.Body>
+
+              <Modal.Footer>
+                <Button
+                  variant="primary"
+                  onClick={() => window.location.reload()}
+                >
+                  Reload
+                </Button>
+              </Modal.Footer>
+            </Modal.Dialog>
+          ) : (
+            <></>
+          )}
+        </div>
+      </Modal>
     </>
   );
 }

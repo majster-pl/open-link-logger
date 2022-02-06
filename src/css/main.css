@@ -1,0 +1,4 @@
+.modal-loading>div>div {
+    background-color: transparent !important;
+    border          : none;
+}

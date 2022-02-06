@@ -1,16 +1,31 @@
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Modal,
+  Spinner,
+  Alert,
+  Button,
+} from "react-bootstrap";
 import GaugeChart from "react-gauge-chart";
 import apiClient from "../service/api";
 import { useState, useEffect } from "react";
 import CountUp from "react-countup";
+import "../css/main.css";
 
-function Home() {
+function Home({ setLoading, setLoadingErrorMsg }) {
   const [avrDownload, setAvrDonload] = useState(0);
   const [avrDownloadUnit, setAvrDonloadUnit] = useState(" ---");
   const [avrUpload, setAvrUpload] = useState(0);
   const [avrUploadUnit, setAvrUploadUnit] = useState(" ---");
   const [avrPing, setAvrPing] = useState(0);
+
+  // reset parameters at component mount
+  useEffect(() => {
+    setLoading(true);
+    setLoadingErrorMsg(false);
+  }, []);
 
   // get avrage of provided array
   const average = (arr) => arr.reduce((p, c) => p + c, 0) / arr.length;
@@ -44,6 +59,7 @@ function Home() {
         .get("/speedtest/")
         .then((response) => {
           const filtered_data = response.data;
+          console.log(response.data);
 
           // downloads
           filtered_data.map((item) => {
@@ -77,10 +93,15 @@ function Home() {
             );
 
             setAvrPing(average(avrage_ping).toFixed());
-          }, 1500);
+            setLoading(false);
+          }, 1000);
         })
         .catch((err) => {
           console.log("Error: ", err);
+          // setLoadingError(true);
+          setLoadingErrorMsg(JSON.stringify(err));
+          // setLoading(false);
+          // alert("Error while loading ");
         });
     };
 
