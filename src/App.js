@@ -32,7 +32,6 @@ function App() {
   const handleShow = () => setShow(true);
 
   const [loading, setLoading] = useState(true);
-  const [loadingError, setLoadingError] = useState(false);
   const [loadingErrorMsg, setLoadingErrorMsg] = useState(false);
 
   return (
@@ -151,8 +150,7 @@ function App() {
       <Modal
         show={loading}
         onHide={() => setLoading(false)}
-        // backdrop="static"
-        eventKeyboard={false}
+        backdrop="static"
         centered
         className="modal-loading"
       >

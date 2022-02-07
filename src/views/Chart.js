@@ -84,7 +84,7 @@ function Home({ days, setLoading, setLoadingErrorMsg }) {
           // filter data with last 24h
           // const filtered_data = response.data;
           const filtered_data = response.data.filter(function (i, n) {
-            if (daysSelected !== null) {
+            if (daysSelected !== 0) {
               return (
                 moment().subtract(daysSelected * 24, "hours") <
                 moment(new Date(i.timestamp))
@@ -132,7 +132,14 @@ function Home({ days, setLoading, setLoadingErrorMsg }) {
 
   const chartDescription = () => {
     if (daysSelected === 0) {
-      return <h1>Displaying all collected data</h1>;
+      return (
+        <div>
+          <h1>Displaying all collected data</h1>
+          <h4>
+            <span style={{ color: "transparent" }}>today</span>
+          </h4>
+        </div>
+      );
     } else {
       let days_text = daysSelected === 1 ? "hours" : "days";
 
@@ -142,14 +149,24 @@ function Home({ days, setLoading, setLoadingErrorMsg }) {
             Last {daysSelected === 1 ? 24 : daysSelected} {days_text}
           </h1>
           <h4>
-            From:{" "}
-            <span className="fw-light">
-              {moment()
-                .days(-daysSelected + 1)
-                .format("DD MMM YYYY")}
-            </span>{" "}
-            To:{" "}
-            <span className="fw-light">{moment().format("DD MMM YYYY")}</span>
+            {daysSelected !== 1 ? (
+              <>
+                From:{" "}
+                <span className="fw-light">
+                  {moment()
+                    .days(-daysSelected + 1)
+                    .format("DD MMM YYYY")}
+                </span>{" "}
+                To:{" "}
+                <span className="fw-light">
+                  {moment().format("DD MMM YYYY")}
+                </span>
+              </>
+            ) : (
+              <>
+                <span style={{ color: "transparent" }}>today</span>
+              </>
+            )}
           </h4>
         </div>
       );
