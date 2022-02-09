@@ -62,7 +62,10 @@ function App() {
                   </Nav.Link>
                 </Nav>
                 <Nav>
-                  <Nav.Link eventKey={4} onClick={() => window.location.reload()}>
+                  <Nav.Link
+                    eventKey={4}
+                    onClick={() => window.location.reload()}
+                  >
                     Refresh
                   </Nav.Link>
                   <Nav.Link eventKey={5} onClick={handleShow}>
@@ -72,42 +75,40 @@ function App() {
               </Navbar.Collapse>
             </Container>
           </Navbar>
-          <Container>
-            <Container>
-              <Routes>
-                <Route
-                  path="/"
-                  element={
-                    <Home
-                      setLoading={setLoading}
-                      setLoadingErrorMsg={setLoadingErrorMsg}
-                    />
-                  }
-                ></Route>
-                <Route
-                  path="/chart"
-                  element={
-                    <Chart
-                      days={1}
-                      setLoading={setLoading}
-                      setLoadingErrorMsg={setLoadingErrorMsg}
-                    />
-                  }
-                ></Route>
-                <Route
-                  path="/table"
-                  element={
-                    <TablePage
-                      days={1}
-                      setLoading={setLoading}
-                      setLoadingErrorMsg={setLoadingErrorMsg}
-                    />
-                  }
-                ></Route>
-                <Route path="/about" element={<>About page</>}></Route>
-                <Route path="*" element={<NotFound />}></Route>
-              </Routes>
-            </Container>
+          <Container className="p-0 mt-3">
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <Home
+                    setLoading={setLoading}
+                    setLoadingErrorMsg={setLoadingErrorMsg}
+                  />
+                }
+              ></Route>
+              <Route
+                path="/chart"
+                element={
+                  <Chart
+                    days={1}
+                    setLoading={setLoading}
+                    setLoadingErrorMsg={setLoadingErrorMsg}
+                  />
+                }
+              ></Route>
+              <Route
+                path="/table"
+                element={
+                  <TablePage
+                    days={1}
+                    setLoading={setLoading}
+                    setLoadingErrorMsg={setLoadingErrorMsg}
+                  />
+                }
+              ></Route>
+              <Route path="/about" element={<>About page</>}></Route>
+              <Route path="*" element={<NotFound />}></Route>
+            </Routes>
           </Container>
         </div>
       </Router>
