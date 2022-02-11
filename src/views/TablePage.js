@@ -1,5 +1,9 @@
-import React from "react";
-import { getReadableSpeedString, checkIfExists } from "../js/main_fn";
+import { useMemo } from "react";
+import {
+  getReadableSpeedString,
+  getReadableFileSizeString,
+  checkIfExists,
+} from "../js/main_fn";
 import {
   Container,
   Modal,
@@ -21,6 +25,7 @@ import {
 } from "react-table";
 import Pagination from "rc-pagination";
 import "rc-pagination/assets/index.css";
+import HeaderDate from "../components/HeaderDate";
 
 function TablePage({ days, setLoading, setLoadingErrorMsg }) {
   const [daysSelected, setDaysSelected] = useState(days);
@@ -61,21 +66,10 @@ function TablePage({ days, setLoading, setLoadingErrorMsg }) {
     setLoadingErrorMsg(false);
   }, []);
 
-  const getReadableFileSizeString = (fileSizeInBytes) => {
-    let i = -1;
-    const byteUnits = [" kb", " Mb", " Gb", " Tb", "Pb", "Eb", "Zb", "Yb"];
-    do {
-      fileSizeInBytes = fileSizeInBytes / 1024;
-      i++;
-    } while (fileSizeInBytes > 1024);
-
-    return [Math.max(fileSizeInBytes, 0).toFixed(2), byteUnits[i]];
-  };
-
-  const columns = React.useMemo(
+  const columns = useMemo(
     () => [
       {
-        Header: "#",
+        Header: "ID",
         accessor: "id",
         Cell: ({ value }) => {
           return value;
@@ -110,7 +104,7 @@ function TablePage({ days, setLoading, setLoadingErrorMsg }) {
         },
       },
       {
-        Header: "Details",
+        Header: "",
         accessor: "share",
         Cell: ({ value, data_ }) => {
           return (
@@ -221,53 +215,9 @@ function TablePage({ days, setLoading, setLoadingErrorMsg }) {
     }
   }, [lastPage]);
 
-
-  const chartDescription = () => {
-    if (daysSelected === 0) {
-      return (
-        <div>
-          <h1>Displaying all collected data</h1>
-          <h4>
-            <span style={{ color: "transparent" }}>today</span>
-          </h4>
-        </div>
-      );
-    } else {
-      let days_text = daysSelected === 1 ? "hours" : "days";
-
-      return (
-        <div>
-          <h1>
-            Last {daysSelected === 1 ? 24 : daysSelected} {days_text}
-          </h1>
-          <h4>
-            {daysSelected !== 1 ? (
-              <>
-                From:{" "}
-                <span className="fw-light">
-                  {moment()
-                    .days(-daysSelected + 1)
-                    .format("DD MMM YYYY")}
-                </span>{" "}
-                To:{" "}
-                <span className="fw-light">
-                  {moment().format("DD MMM YYYY")}
-                </span>
-              </>
-            ) : (
-              <>
-                <span style={{ color: "transparent" }}>today</span>
-              </>
-            )}
-          </h4>
-        </div>
-      );
-    }
-  };
-
   return (
     <Container className="text-center">
-      {chartDescription()}
+      <HeaderDate daysSelected={daysSelected} />
 
       <Stack direction="horizontal" gap={3} className="mb-2">
         <Pagination
@@ -398,7 +348,7 @@ function TablePage({ days, setLoading, setLoadingErrorMsg }) {
                     <td>{checkIfExists(modalData.ping) + " ms"}</td>
                   </tr>
                   <tr>
-                    <td>Bytes Received</td>
+                    <td>Data Received</td>
                     <td>
                       {getReadableFileSizeString(
                         checkIfExists(modalData.bytes_received)
@@ -406,7 +356,7 @@ function TablePage({ days, setLoading, setLoadingErrorMsg }) {
                     </td>
                   </tr>
                   <tr>
-                    <td>Bytes Sent</td>
+                    <td>Data Sent</td>
                     <td>
                       {getReadableFileSizeString(
                         checkIfExists(modalData.bytes_sent)

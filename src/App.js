@@ -93,6 +93,7 @@ function App() {
                     days={1}
                     setLoading={setLoading}
                     setLoadingErrorMsg={setLoadingErrorMsg}
+                    loading={loading}
                   />
                 }
               ></Route>
