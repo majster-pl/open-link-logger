@@ -38,4 +38,13 @@ const getReadableFileSizeString = (fileSizeInBytes) => {
   return [Math.max(fileSizeInBytes, 0.1).toFixed(1), byteUnits[i]];
 };
 
-export { getReadableSpeedString, getReadableFileSizeString };
+  const checkIfExists = (str) => {
+    if (typeof str !== "undefined") {
+      return str;
+    } else {
+      return "no data";
+    }
+  };
+
+
+export { getReadableSpeedString, getReadableFileSizeString, checkIfExists };

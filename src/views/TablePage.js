@@ -1,5 +1,5 @@
 import React from "react";
-import { getReadableSpeedString } from "../js/main_fn";
+import { getReadableSpeedString, checkIfExists } from "../js/main_fn";
 import {
   Container,
   Modal,
@@ -203,10 +203,6 @@ function TablePage({ days, setLoading, setLoadingErrorMsg }) {
   }, [currentPageUrl]);
 
   useEffect(() => {
-    console.log(firstPage);
-  }, [firstPage]);
-
-  useEffect(() => {
     console.log("next:", nextPage);
     if (nextPage) {
       setCurrentPage(Number(nextPage.split("page=")[1]) - 1);
@@ -225,14 +221,6 @@ function TablePage({ days, setLoading, setLoadingErrorMsg }) {
     }
   }, [lastPage]);
 
-
-  const checkIfExists = (str) => {
-    if (typeof str !== "undefined") {
-      return str;
-    } else {
-      return "no data";
-    }
-  };
 
   const chartDescription = () => {
     if (daysSelected === 0) {
