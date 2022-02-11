@@ -1,11 +1,9 @@
 import React from "react";
+import { getReadableSpeedString } from "../js/main_fn";
 import {
   Container,
   Modal,
   Button,
-  ButtonGroup,
-  ButtonToolbar,
-  Pagination,
   Table,
   Nav,
   DropdownButton,
@@ -15,10 +13,17 @@ import {
 import moment from "moment";
 import apiClient from "../service/api";
 import { useState, useEffect } from "react";
-import { useTable } from "react-table";
+import {
+  useTable,
+  useSortBy,
+  useGlobalFilter,
+  usePagination,
+} from "react-table";
+import Pagination from "rc-pagination";
+import "rc-pagination/assets/index.css";
 
 function TablePage({ days, setLoading, setLoadingErrorMsg }) {
-  const [daysSelected, setDaysSelected] = useState(1);
+  const [daysSelected, setDaysSelected] = useState(days);
   const [data, setData] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [modalData, setModalData] = useState([]);
@@ -29,10 +34,10 @@ function TablePage({ days, setLoading, setLoadingErrorMsg }) {
   const [lastPage, setLastPage] = useState(null);
   const [totalPages, setTotalPages] = useState(null);
   const [currentPage, setCurrentPage] = useState(null);
-  const [pagesPerPage, setPagesPerPage] = useState(10);
+  const [pagesPerPage, setPagesPerPage] = useState(20);
 
   const [currentPageUrl, setCurrentPageUrl] = useState(
-    `/speedtest?_limit=${pagesPerPage}&timestamp_gte=${moment()
+    `/speedtest?_sort=timestamp&_order=desc&_limit=${pagesPerPage}&timestamp_gte=${moment()
       .subtract(daysSelected * 24, "hours")
       .format("YYYY-MM-DDThh:mm")}&_page=1`
   );
@@ -40,9 +45,9 @@ function TablePage({ days, setLoading, setLoadingErrorMsg }) {
   const generateTableUrl = (newPage) => {
     let url = "";
     if (daysSelected === 0) {
-      url = `/speedtest?_limit=${pagesPerPage}&_page=${newPage}`;
+      url = `/speedtest?_sort=timestamp&_order=desc&_limit=${pagesPerPage}&_page=${newPage}`;
     } else {
-      url = `/speedtest?_limit=${pagesPerPage}&timestamp_gte=${moment()
+      url = `/speedtest?_sort=timestamp&_order=desc&_limit=${pagesPerPage}&timestamp_gte=${moment()
         .subtract(daysSelected * 24, "hours")
         .format("YYYY-MM-DDThh:mm")}&_page=${newPage}`;
     }
@@ -55,26 +60,6 @@ function TablePage({ days, setLoading, setLoadingErrorMsg }) {
     setLoading(true);
     setLoadingErrorMsg(false);
   }, []);
-
-  const getReadableSpeedString = (fileSizeInBytes) => {
-    let i = -1;
-    const byteUnits = [
-      " kbps",
-      " Mbps",
-      " Gbps",
-      " Tbps",
-      "Pbps",
-      "Ebps",
-      "Zbps",
-      "Ybps",
-    ];
-    do {
-      fileSizeInBytes = fileSizeInBytes / 1024;
-      i++;
-    } while (fileSizeInBytes > 1024);
-
-    return [Math.max(fileSizeInBytes, 0).toFixed(2), byteUnits[i]];
-  };
 
   const getReadableFileSizeString = (fileSizeInBytes) => {
     let i = -1;
@@ -183,16 +168,14 @@ function TablePage({ days, setLoading, setLoadingErrorMsg }) {
   };
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable({ columns, data });
+    useTable({ columns, data }, useGlobalFilter, useSortBy, usePagination);
 
   const getDownloadData = () => {
     const table_data = [];
     setLoading(true);
 
     apiClient
-      .get(
-        currentPageUrl
-      )
+      .get(currentPageUrl)
       // 2022-02-05
       .then((response) => {
         console.log(response);
@@ -231,23 +214,17 @@ function TablePage({ days, setLoading, setLoadingErrorMsg }) {
   }, [nextPage]);
 
   useEffect(() => {
-    console.log("prev:", prevPage);
     if (prevPage) {
       setCurrentPage(Number(prevPage.split("page=")[1]) + 1);
     }
   }, [prevPage]);
 
   useEffect(() => {
-    console.log(lastPage);
     if (lastPage) {
       setTotalPages(Number(lastPage.split("page=")[1]));
     }
   }, [lastPage]);
 
-  useEffect(() => {
-    console.log("currentPage:", Number(currentPage));
-    // console.log("TYPE OFF TOTAL PAGES:", typeof totalPages);
-  }, [currentPage]);
 
   const checkIfExists = (str) => {
     if (typeof str !== "undefined") {
@@ -305,6 +282,13 @@ function TablePage({ days, setLoading, setLoadingErrorMsg }) {
       {chartDescription()}
 
       <Stack direction="horizontal" gap={3} className="mb-2">
+        <Pagination
+          current={currentPage}
+          total={totalPages}
+          defaultPageSize={1}
+          pageSize={1}
+          onChange={(newPage) => generateTableUrl(newPage)}
+        />
         <DropdownButton
           className="text-end ms-auto"
           variant="info"
@@ -331,7 +315,26 @@ function TablePage({ days, setLoading, setLoadingErrorMsg }) {
           {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
-                <th {...column.getHeaderProps()}>{column.render("Header")}</th>
+                <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                  {column.render("Header")}
+                  <span>
+                    {column.isSorted ? (
+                      column.isSortedDesc ? (
+                        <i
+                          className="fa fa-angle-down ms-1"
+                          aria-hidden="true"
+                        ></i>
+                      ) : (
+                        <i
+                          className="fa fa-angle-up ms-1"
+                          aria-hidden="true"
+                        ></i>
+                      )
+                    ) : (
+                      ""
+                    )}
+                  </span>
+                </th>
               ))}
             </tr>
           ))}
@@ -360,31 +363,6 @@ function TablePage({ days, setLoading, setLoadingErrorMsg }) {
           })}
         </tbody>
       </Table>
-
-      <Pagination className={`me-2 ${totalPages > 0 ? "" : "d-none"}`}>
-        <Pagination.First
-          className={`${currentPage === 0 ? "" : "disabled"}`}
-          onClick={() => {
-            console.log(firstPage);
-          }}
-        />
-        <Pagination.Prev className={`${prevPage ? "" : "disabled"}`} />
-
-        {[...Array(totalPages).keys()].map((index) => {
-          let act = currentPage === index + 1 ? true : false;
-          return (
-            <Pagination.Item
-              active={act}
-              key={index + 1}
-              onClick={() => generateTableUrl(Number(index) + 1)}
-            >
-              {Number(index) + 1}
-            </Pagination.Item>
-          );
-        })}
-        <Pagination.Next className={`${nextPage ? "" : "d-none"}`} />
-        <Pagination.Last className={`${lastPage ? "" : "d-none"}`} />
-      </Pagination>
 
       <Modal
         show={showModal}

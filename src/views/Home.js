@@ -1,18 +1,11 @@
 import React from "react";
-import {
-  Container,
-  Row,
-  Col,
-  Modal,
-  Spinner,
-  Alert,
-  Button,
-} from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 import GaugeChart from "react-gauge-chart";
 import apiClient from "../service/api";
 import { useState, useEffect } from "react";
 import CountUp from "react-countup";
 import "../css/main.css";
+import { getReadableFileSizeString } from "../js/main_fn";
 
 function Home({ setLoading, setLoadingErrorMsg }) {
   const [avrDownload, setAvrDonload] = useState(0);
@@ -30,25 +23,6 @@ function Home({ setLoading, setLoadingErrorMsg }) {
   // get avrage of provided array
   const average = (arr) => arr.reduce((p, c) => p + c, 0) / arr.length;
 
-  const getReadableFileSizeString = (fileSizeInBytes) => {
-    let i = -1;
-    const byteUnits = [
-      " kbps",
-      " Mbps",
-      " Gbps",
-      " Tbps",
-      "Pbps",
-      "Ebps",
-      "Zbps",
-      "Ybps",
-    ];
-    do {
-      fileSizeInBytes = fileSizeInBytes / 1024;
-      i++;
-    } while (fileSizeInBytes > 1024);
-
-    return [Math.max(fileSizeInBytes, 0.1).toFixed(1), byteUnits[i]];
-  };
   useEffect(() => {
     const getAvrageData = () => {
       const avrage_download = [];
