@@ -142,10 +142,6 @@ If you want to run test just navigate to application folder and execute:
   
 ## Screenshots
 
-![Terminal-1](https://raw.githubusercontent.com/majster-pl/open-link-logger/main/screenshots/terminal1.png)
-![Terminal-2](https://raw.githubusercontent.com/majster-pl/open-link-logger/main/screenshots/terminal2.png)
-![Terminal-3](https://raw.githubusercontent.com/majster-pl/open-link-logger/main/screenshots/terminal3.png)
-![Terminal-4](https://raw.githubusercontent.com/majster-pl/open-link-logger/main/screenshots/terminal4.png)
 
 ![Dash](https://raw.githubusercontent.com/majster-pl/open-link-logger/main/screenshots/Screenshot1.png)
 
@@ -162,6 +158,11 @@ If you want to run test just navigate to application folder and execute:
 ![Table Mobile](https://raw.githubusercontent.com/majster-pl/open-link-logger/main/screenshots/Screenshot7.png)
 
 ![Info Mobile](https://raw.githubusercontent.com/majster-pl/open-link-logger/main/screenshots/Screenshot8.png)
+
+![Terminal-1](https://raw.githubusercontent.com/majster-pl/open-link-logger/main/screenshots/terminal1.png)
+![Terminal-2](https://raw.githubusercontent.com/majster-pl/open-link-logger/main/screenshots/terminal2.png)
+![Terminal-3](https://raw.githubusercontent.com/majster-pl/open-link-logger/main/screenshots/terminal3.png)
+![Terminal-4](https://raw.githubusercontent.com/majster-pl/open-link-logger/main/screenshots/terminal4.png)
 
 ### Animations:
 ![Dash Animation](https://github.com/majster-pl/open-link-logger/blob/main/screenshots/dash1.gif?raw=true)
