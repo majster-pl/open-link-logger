@@ -1,9 +1,11 @@
+# Open-Link-Logger (Source Code)
 
 ![enter image description here](https://github.com/majster-pl/open-link-logger/raw/main/public/logo-with-title.png)
 
 ![Dash Animation](https://github.com/majster-pl/open-link-logger/blob/main/screenshots/dash1.gif?raw=true)
 
-# Open-Link-Logger
+
+## Open-Link-Logger
 
   
 
