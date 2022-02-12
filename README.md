@@ -1,5 +1,5 @@
 ﻿
-  
+# Open-Link-Logger (Application)
 
 ![logo](https://github.com/majster-pl/open-link-logger/raw/main/public/logo-with-title.png)
 
@@ -7,7 +7,7 @@
 ![Dash gif](https://github.com/majster-pl/open-link-logger/blob/main/screenshots/dash1.gif?raw=true)
   
 
-# Open-Link-Logger
+## Open-Link-Logger
 
   
 
