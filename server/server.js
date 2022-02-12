@@ -6,8 +6,8 @@ const app = express();
 
 const port = argv.p || 3900;
 const data_path = argv.d || path.join(__dirname, "..", "data/", "db.json");
-console.dir(port);
-console.dir(data_path);
+// console.dir(port);
+// console.dir(data_path);
 
 app.use(express.static(path.join(__dirname, "..", "build")));
 
@@ -17,3 +17,4 @@ app.get("*", (req, res) => {
 });
 
 app.listen(port);
+
