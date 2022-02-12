@@ -1,7 +1,7 @@
 
 ![enter image description here](https://github.com/majster-pl/open-link-logger/raw/main/public/logo-with-title.png)
 
-  
+![Dash Animation](https://github.com/majster-pl/open-link-logger/blob/main/screenshots/dash1.gif?raw=true)
 
 # Open-Link-Logger
 
@@ -72,7 +72,31 @@ If you want to run test just navigate to application folder and execute:
 | -f | start fresh application setup |
 | -s | Stop running servers in the background |
 
+
   
+## Screenshots
+
+![Dash](https://raw.githubusercontent.com/majster-pl/open-link-logger/main/screenshots/Screenshot1.png)
+  ![Chart](https://raw.githubusercontent.com/majster-pl/open-link-logger/main/screenshots/Screenshot2.png)
+
+![Table](https://raw.githubusercontent.com/majster-pl/open-link-logger/main/screenshots/Screenshot3.png)
+
+![Details](https://raw.githubusercontent.com/majster-pl/open-link-logger/main/screenshots/Screenshot4.png)
+
+![Filter](https://raw.githubusercontent.com/majster-pl/open-link-logger/main/screenshots/Screenshot5.png)
+
+![Dash Mobile](https://raw.githubusercontent.com/majster-pl/open-link-logger/main/screenshots/Screenshot6.png)
+
+![Table Mobile](https://raw.githubusercontent.com/majster-pl/open-link-logger/main/screenshots/Screenshot7.png)
+
+![Info Mobile](https://raw.githubusercontent.com/majster-pl/open-link-logger/main/screenshots/Screenshot8.png)
+
+### Animations:
+![Dash Animation](https://github.com/majster-pl/open-link-logger/blob/main/screenshots/dash1.gif?raw=true)
+
+![Chart Animation](https://github.com/majster-pl/open-link-logger/blob/main/screenshots/chart1.gif?raw=true)
+
+![Table Animation](https://github.com/majster-pl/open-link-logger/blob/main/screenshots/table1.gif?raw=true)  
   
 
 ## Licence
