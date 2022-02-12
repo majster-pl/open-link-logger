@@ -1,5 +1,5 @@
 ﻿
-# Open-Link-Logger (Application)
+# Open-Link-Logger (Source Code)
 
 ![logo](https://github.com/majster-pl/open-link-logger/raw/main/public/logo-with-title.png)
 
