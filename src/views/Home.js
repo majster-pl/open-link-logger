@@ -5,14 +5,18 @@ import apiClient from "../service/api";
 import { useState, useEffect } from "react";
 import CountUp from "react-countup";
 import "../css/main.css";
-import { getReadableFileSizeString } from "../js/main_fn";
+import {
+  getReadableFileSizeString,
+  getReadableSpeedString,
+} from "../js/main_fn";
+import Badge from "../components/Badge";
 
-function Home({ setLoading, setLoadingErrorMsg }) {
-  const [avrDownload, setAvrDonload] = useState(0);
-  const [avrDownloadUnit, setAvrDonloadUnit] = useState(" ---");
-  const [avrUpload, setAvrUpload] = useState(0);
-  const [avrUploadUnit, setAvrUploadUnit] = useState(" ---");
-  const [avrPing, setAvrPing] = useState(0);
+const Home = ({ setLoading, setLoadingErrorMsg }) => {
+  const [avrDownload, setAvrDonload] = useState([0, " ---"]);
+  const [avrUpload, setAvrUpload] = useState([0, " ---"]);
+  const [avrPing, setAvrPing] = useState([0, " ---"]);
+  const [totalDownload, setTotalDownload] = useState([0, " ---"]);
+  const [totalUpload, setTotalUpload] = useState([0, " ---"]);
 
   // reset parameters at component mount
   useEffect(() => {
@@ -24,49 +28,45 @@ function Home({ setLoading, setLoadingErrorMsg }) {
   const average = (arr) => arr.reduce((p, c) => p + c, 0) / arr.length;
 
   useEffect(() => {
+    const getSum = (numbers) => {
+      let total = numbers.reduce((sum, current) => sum + current, 0);
+      return total;
+    };
     const getAvrageData = () => {
       const avrage_download = [];
       const avrage_upload = [];
       const avrage_ping = [];
+      const total_download = [];
+      const total_upoload = [];
 
       apiClient
         .get("/speedtest/")
         .then((response) => {
           const filtered_data = response.data;
-          console.log(response.data);
+          // console.log(response.data);
 
-          // downloads
           filtered_data.map((item) => {
-            let i = item.download.toFixed(2);
-            // let e = getReadableFileSizeString(item.download, null);
-            return avrage_download.push(Number(i));
-          });
-          // uploads
-          filtered_data.map((item) => {
-            let i = item.upload.toFixed(2);
-            return avrage_upload.push(Number(i));
-          });
-          // ping
-          filtered_data.map((item) => {
-            return avrage_ping.push(Number(item.ping.toFixed(2)));
+            avrage_download.push(Number(item.download.toFixed(2)));
+            avrage_upload.push(Number(item.upload.toFixed(2)));
+            avrage_ping.push(Number(item.ping.toFixed(2)));
+            total_download.push(Number(item.bytes_received.toFixed(2)));
+            total_upoload.push(Number(item.bytes_sent.toFixed(2)));
           });
 
           setTimeout(() => {
             setAvrDonload(
-              getReadableFileSizeString(average(avrage_download).toFixed())[0]
-            );
-            setAvrDonloadUnit(
-              getReadableFileSizeString(average(avrage_download).toFixed())[1]
+              getReadableSpeedString(average(avrage_download).toFixed())
             );
 
             setAvrUpload(
-              getReadableFileSizeString(average(avrage_upload).toFixed())[0]
-            );
-            setAvrUploadUnit(
-              getReadableFileSizeString(average(avrage_upload).toFixed())[1]
+              getReadableSpeedString(average(avrage_upload).toFixed())
             );
 
-            setAvrPing(average(avrage_ping).toFixed());
+            // get total downloaded and uploaded data
+            setTotalDownload(getReadableFileSizeString(getSum(total_download)));
+            setTotalUpload(getReadableFileSizeString(getSum(total_upoload)));
+
+            setAvrPing([average(avrage_ping).toFixed(), " ms"]);
             setLoading(false);
           }, 1000);
         })
@@ -84,7 +84,7 @@ function Home({ setLoading, setLoadingErrorMsg }) {
 
   return (
     <Container className="text-center mt-3">
-      <h1>Your avrage speed</h1>
+      <h1>Avrage speed</h1>
       <Row>
         <Col xs={12} md={6}>
           <GaugeChart
@@ -94,7 +94,9 @@ function Home({ setLoading, setLoadingErrorMsg }) {
             colors={["#5BE12C", "#F5CD19", "#EA4228"]}
             arcWidth={0.3}
             percent={
-              Number(avrDownload) / 100 > 1 ? 1 : Number(avrDownload) / 100
+              Number(avrDownload[0]) / 100 > 1
+                ? 1
+                : Number(avrDownload[0]) / 100
             }
             textColor="#212529"
             needleColor="#ffc107"
@@ -103,8 +105,8 @@ function Home({ setLoading, setLoadingErrorMsg }) {
             hideText={true}
           />
           <h1 className="fw-normal">
-            <CountUp end={avrDownload} />
-            <span className="fs-4">{avrDownloadUnit}</span>
+            <CountUp end={avrDownload[0]} />
+            <span className="fs-4">{avrDownload[1]}</span>
           </h1>
           <h2>Download</h2>
         </Col>
@@ -115,7 +117,9 @@ function Home({ setLoading, setLoadingErrorMsg }) {
             nrOfLevels={14}
             colors={["#5BE12C", "#F5CD19", "#EA4228"]}
             arcWidth={0.3}
-            percent={Number(avrUpload) / 100 > 1 ? 1 : Number(avrUpload) / 100}
+            percent={
+              Number(avrUpload[0]) / 100 > 1 ? 1 : Number(avrUpload[0]) / 100
+            }
             textColor="#212529"
             needleColor="#ffc107"
             animateDuration={6000}
@@ -123,21 +127,32 @@ function Home({ setLoading, setLoadingErrorMsg }) {
             hideText={true}
           />
           <h1 className="fw-normal">
-            <CountUp end={avrUpload} />
-            <span className="fs-4">{avrUploadUnit}</span>
+            <CountUp end={avrUpload[0]} />
+            <span className="fs-4">{avrUpload[1]}</span>
           </h1>
           <h2>Upload</h2>
         </Col>
-        <Col className="mt-5" md={12}>
-          <h1>
-            <CountUp delay={2} end={avrPing} />
-            ms
-          </h1>
-          <h6>Avrage Ping</h6>
-        </Col>
+        <hr className="mt-5" />
+        <Row className="mx-auto my-5">
+          <Badge
+            total={avrPing}
+            label={"Avrage Ping"}
+            icon={"fa fa-exchange"}
+          />
+          <Badge
+            total={totalDownload}
+            label={"Total Download"}
+            icon={"fa fa-download"}
+          />
+          <Badge
+            total={totalUpload}
+            label={"Total Upload"}
+            icon={"fa fa-download"}
+          />
+        </Row>
       </Row>
     </Container>
   );
-}
+};
 
 export default Home;
