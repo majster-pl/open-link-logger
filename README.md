@@ -142,8 +142,14 @@ If you want to run test just navigate to application folder and execute:
   
 ## Screenshots
 
+![Terminal-1](https://raw.githubusercontent.com/majster-pl/open-link-logger/main/screenshots/terminal1.png)
+![Terminal-2](https://raw.githubusercontent.com/majster-pl/open-link-logger/main/screenshots/terminal2.png)
+![Terminal-3](https://raw.githubusercontent.com/majster-pl/open-link-logger/main/screenshots/terminal3.png)
+![Terminal-4](https://raw.githubusercontent.com/majster-pl/open-link-logger/main/screenshots/terminal4.png)
+
 ![Dash](https://raw.githubusercontent.com/majster-pl/open-link-logger/main/screenshots/Screenshot1.png)
-  ![Chart](https://raw.githubusercontent.com/majster-pl/open-link-logger/main/screenshots/Screenshot2.png)
+
+![Chart](https://raw.githubusercontent.com/majster-pl/open-link-logger/main/screenshots/Screenshot2.png)
 
 ![Table](https://raw.githubusercontent.com/majster-pl/open-link-logger/main/screenshots/Screenshot3.png)
 
