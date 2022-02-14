@@ -275,7 +275,14 @@ def start_local_api_server():
             return
     except:
         logging.info(f"Starting local API server on port: {port_api}")
-        # print(f"Starting local server...")
+        # check if db.json file exist if not copy from template
+        if not os.path.exists(data_json_path):
+            data = {"speedtest": []}
+            Path(os.path.join(os.getcwd(), 'data')
+                 ).mkdir(parents=True, exist_ok=True)
+            with open('./data/db.json', 'w') as f:
+                json.dump(data, f)
+            logging.info('New db.json created.')
         _path = os.path.join(os.getcwd(), "node_modules",
                              ".bin", "json-server")
         api_process = subprocess.Popen(
@@ -299,7 +306,7 @@ def save_results(new_data, filename=data_json_path):
         with open('./data/db.json', 'w') as f:
             json.dump(data, f)
         logging.info('New db.json created.')
-        
+
     with open(filename, 'r+') as file:
         file_data = json.load(file)
         try:
