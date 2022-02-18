@@ -37,8 +37,8 @@ function App() {
   return (
     <>
       <Router>
-        <div className="App">
-          <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+        <div className="App mb-5">
+          <Navbar collapseOnSelect sticky="top" expand="lg" bg="dark" variant="dark">
             <Container>
               <Navbar.Brand as={Link} to="/">
                 <img
