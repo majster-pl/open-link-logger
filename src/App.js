@@ -113,7 +113,7 @@ function App() {
           </Container>
         </div>
       </Router>
-      <Offcanvas className={"h-50"} show={show} onHide={handleClose} placement="top">
+      <Offcanvas style={{minHeight: "33rem"}} show={show} onHide={handleClose} placement="top">
         <Offcanvas.Header closeButton>
           <Offcanvas.Title>
             <span className="fs-4">About </span>
