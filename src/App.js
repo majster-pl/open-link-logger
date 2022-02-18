@@ -199,16 +199,17 @@ function App() {
           )}
         </div>
       </Modal>
-      <Navbar fixed="bottom" variant="dark" bg="dark">
-        <Navbar.Brand className="ms-3 fs-6 fn-orange">
-          Copyright (c) 2022{" "}
+      <Navbar className="py-0" fixed="bottom" variant="dark" bg="dark">
+        <Navbar.Brand style={{ fontSize: "0.8rem" }} className="ms-3 fn-orange">
+          Copyright (c) 2022{" - "}
           <a
-            className="text-white text-decoration-none"
+            className="fn-blue text-decoration-none"
             href="https://github.com/majster-pl"
             target={"_blank"}
             rel="noreferrer"
           >
-            Szymon Waliczek
+            Szymon Waliczek {" "}
+            <i className="fa fa-github" style={{fontSize: "1.1rem"}} aria-hidden="true"></i>
           </a>
         </Navbar.Brand>
       </Navbar>
