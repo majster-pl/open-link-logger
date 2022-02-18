@@ -1,8 +1,13 @@
-import React from "react";
+import { useEffect } from "react";
 import { Container } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-const NotFound = () => {
+const NotFound = ({setLoading}) => {
+  // reset parameters at component mount
+  useEffect(() => {
+    setLoading(false);
+  }, []);
+
   return (
     <Container className="text-center">
       <p className="fs-1">404 error</p>

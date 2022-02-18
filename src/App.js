@@ -108,12 +108,12 @@ function App() {
                 }
               ></Route>
               <Route path="/about" element={<>About page</>}></Route>
-              <Route path="*" element={<NotFound />}></Route>
+              <Route path="*" element={<NotFound setLoading={setLoading} />}></Route>
             </Routes>
           </Container>
         </div>
       </Router>
-      <Offcanvas show={show} onHide={handleClose} placement="top">
+      <Offcanvas className={"h-50"} show={show} onHide={handleClose} placement="top">
         <Offcanvas.Header closeButton>
           <Offcanvas.Title>
             <span className="fs-4">About </span>
@@ -126,7 +126,7 @@ function App() {
           <p>
             Open Link Logger is Open Source software which can be used to log
             your internet connection by adding a job to crontab and performing
-            test in the sequence you want. Saved data then can be viewed in your
+            test in the sequence you want. Saved data can then be viewed in your
             favourite web browser.
           </p>
           <Alert variant="danger">
@@ -135,7 +135,7 @@ function App() {
               perform tests. Charges might apply as per your service provider
               contract.
             </p>
-            One test might use as much as <b>200MB</b>
+            One test might use as much as <b>300MB !</b>
           </Alert>
           <p>
             If you have any troubles using a software please report a issue on{" "}
