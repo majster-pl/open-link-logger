@@ -147,7 +147,7 @@ const Home = ({ setLoading, setLoadingErrorMsg }) => {
           <Badge
             total={totalUpload}
             label={"Total Upload"}
-            icon={"fa fa-download"}
+            icon={"fa fa-upload"}
           />
         </Row>
       </Row>
