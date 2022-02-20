@@ -22,7 +22,6 @@ var accessLogStream = fs.createWriteStream(path.join(__dirname, "access.log"), {
 app.use(morgan("combined", { stream: accessLogStream }));
 
 app.get("*", (req, res) => {
-  //   res.sendFile("./views/index.html", { root: __dirname });
   res.sendFile(path.join(__dirname, "..", "build", "index.html"));
 });
 
