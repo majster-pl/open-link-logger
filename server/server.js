@@ -1,4 +1,6 @@
 const express = require("express");
+const morgan = require("morgan");
+const fs = require("fs");
 const path = require("path");
 const argv = require("minimist")(process.argv.slice(2));
 
@@ -11,10 +13,15 @@ const data_path = argv.d || path.join(__dirname, "..", "data/", "db.json");
 
 app.use(express.static(path.join(__dirname, "..", "build")));
 
+// create a write stream (in append mode)
+var accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' })
+
+// setup the logger
+app.use(morgan('combined', { stream: accessLogStream }))
+
 app.get("*", (req, res) => {
   //   res.sendFile("./views/index.html", { root: __dirname });
   res.sendFile(path.join(__dirname, "..", "build", "index.html"));
 });
 
 app.listen(port);
-
