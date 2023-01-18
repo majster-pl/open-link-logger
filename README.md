@@ -91,7 +91,7 @@ This software was tested on Ubuntu Linux and might not work on other distributio
 
   
 
-`./scripts/open-link-logger`
+`cd scripts && ./open-link-logger`
 
   
 
