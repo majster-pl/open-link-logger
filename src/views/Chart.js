@@ -59,9 +59,7 @@ function Home({ days, setLoading, setLoadingErrorMsg, loading }) {
         click: (event, chartContext, config) => {
           // console.log(JSON.stringify(config.config.series));
           let id = config.config.series[2].data[config.dataPointIndex];
-          if (id !== undefined) {
-            getModalData(id[1]);
-          }
+          getModalData(id[1] ?? id);
         },
       },
     },
@@ -117,7 +115,7 @@ function Home({ days, setLoading, setLoadingErrorMsg, loading }) {
       apiClient
         .get("/speedtest/")
         .then((response) => {
-          // console.log(response.data);
+          console.log("debug", response.data);
           // filter data with last 24h
           // const filtered_data = response.data;
           const filtered_data = response.data.filter(function (i, n) {
@@ -130,27 +128,38 @@ function Home({ days, setLoading, setLoadingErrorMsg, loading }) {
               return i;
             }
           });
+          console.log("debug filtered_data", filtered_data);
+          console.log(chart_data_download);
+          console.log(chart_data_upload);
+          console.log(chart_data_time);
+          console.log(chart_data_ping_and_id);
 
           // timestamp
           filtered_data.map((item) => {
-            return chart_data_time.push(
-              moment(new Date(item.timestamp)).format("DD-MMM-YYYY HH:mm")
-            );
+            if(item.timestamp && item.download && item.download.bandwidth && item.upload && item.upload.bandwidth && item.ping && item.ping.latency) {
+              chart_data_time.push(moment(new Date(item.timestamp)).format("DD-MMM-YYYY HH:mm"));
+              chart_data_download.push( (item.download.bandwidth / 125000).toFixed(2));
+              chart_data_upload.push((item.upload.bandwidth / 125000).toFixed(2));
+              chart_data_ping_and_id.push([item.ping.latency.toFixed(2), item.id]);
+            } else if (item.timestamp) {
+              chart_data_time.push(moment(new Date(item.timestamp)).format("DD-MMM-YYYY HH:mm"));
+              chart_data_download.push(-1);
+              chart_data_upload.push(-1);
+              chart_data_ping_and_id.push(item.id);
+            } 
           });
           // downloads
-          filtered_data.map((item) => {
-            return chart_data_download.push(
-              (item.download.bandwidth / 125000).toFixed(2)
-            );
-          });
+          // filtered_data.map((item) => {
+          //   return item.download.bandwidth && chart_data_download.push( (item.download.bandwidth / 125000).toFixed(2));
+          // });
           // uploads
-          filtered_data.map((item) => {
-            return chart_data_upload.push((item.upload.bandwidth / 125000).toFixed(2));
-          });
+          // filtered_data.map((item) => {
+          //   return chart_data_upload.push((item.upload.bandwidth / 125000).toFixed(2));
+          // });
           // ping
-          filtered_data.map((item) => {
-            return chart_data_ping_and_id.push([item.ping.latency.toFixed(2), item.id]);
-          });
+          // filtered_data.map((item) => {
+          //   return chart_data_ping_and_id.push([item.ping.latency.toFixed(2), item.id]);
+          // });
 
           setTimestamps(chart_data_time);
           setDownloads(chart_data_download);
