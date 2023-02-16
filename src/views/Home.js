@@ -2,7 +2,7 @@ import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import GaugeChart from "react-gauge-chart";
 import apiClient from "../service/api";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import CountUp from "react-countup";
 import "../css/main.css";
 import {
@@ -82,28 +82,50 @@ const Home = ({ setLoading, setLoadingErrorMsg }) => {
     getAvrageData();
   }, []);
 
+  const uploadGauge = useMemo(() => {
+    return <GaugeChart
+      id="gauge-upload"
+      className="mt-4"
+      nrOfLevels={14}
+      colors={["#5BE12C", "#F5CD19", "#EA4228"]}
+      arcWidth={0.3}
+      percent={
+        Number(avrUpload[0]) / 100 > 1 ? 1 : Number(avrUpload[0]) / 100
+      }
+      textColor="#212529"
+      needleColor="#ffc107"
+      animateDuration={6000}
+      needleBaseColor="#212529"
+      hideText={true}
+    />
+  }, [avrUpload])
+
+  const downloadGauge = useMemo(() => {
+    return <GaugeChart
+      id="gauge-download"
+      className="mt-4"
+      nrOfLevels={14}
+      colors={["#5BE12C", "#F5CD19", "#EA4228"]}
+      arcWidth={0.3}
+      percent={
+        Number(avrDownload[0]) / 100 > 1
+          ? 1
+          : Number(avrDownload[0]) / 100
+      }
+      textColor="#212529"
+      needleColor="#ffc107"
+      needleBaseColor="#212529"
+      animateDuration={6000}
+      hideText={true}
+    />
+  }, [avrDownload])
+
   return (
     <Container className="text-center mt-3">
       <h1>Avrage speed</h1>
       <Row>
         <Col xs={12} md={6}>
-          <GaugeChart
-            id="gauge-download"
-            className="mt-4"
-            nrOfLevels={14}
-            colors={["#5BE12C", "#F5CD19", "#EA4228"]}
-            arcWidth={0.3}
-            percent={
-              Number(avrDownload[0]) / 100 > 1
-                ? 1
-                : Number(avrDownload[0]) / 100
-            }
-            textColor="#212529"
-            needleColor="#ffc107"
-            needleBaseColor="#212529"
-            animateDuration={6000}
-            hideText={true}
-          />
+          {downloadGauge}
           <h1 className="fw-normal">
             <CountUp end={avrDownload[0]} />
             <span className="fs-4">{avrDownload[1]}</span>
@@ -111,21 +133,7 @@ const Home = ({ setLoading, setLoadingErrorMsg }) => {
           <h2>Download</h2>
         </Col>
         <Col xs={12} md={6}>
-          <GaugeChart
-            id="gauge-upload"
-            className="mt-4"
-            nrOfLevels={14}
-            colors={["#5BE12C", "#F5CD19", "#EA4228"]}
-            arcWidth={0.3}
-            percent={
-              Number(avrUpload[0]) / 100 > 1 ? 1 : Number(avrUpload[0]) / 100
-            }
-            textColor="#212529"
-            needleColor="#ffc107"
-            animateDuration={6000}
-            needleBaseColor="#212529"
-            hideText={true}
-          />
+          {uploadGauge}
           <h1 className="fw-normal">
             <CountUp end={avrUpload[0]} />
             <span className="fs-4">{avrUpload[1]}</span>
