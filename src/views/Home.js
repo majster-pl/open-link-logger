@@ -43,14 +43,14 @@ const Home = ({ setLoading, setLoadingErrorMsg }) => {
         .get("/speedtest/")
         .then((response) => {
           const filtered_data = response.data;
-          // console.log(response.data);
+          console.log(response.data);
 
           filtered_data.map((item) => {
-            avrage_download.push(Number(item.download.toFixed(2)));
-            avrage_upload.push(Number(item.upload.toFixed(2)));
-            avrage_ping.push(Number(item.ping.toFixed(2)));
-            total_download.push(Number(item.bytes_received.toFixed(2)));
-            total_upoload.push(Number(item.bytes_sent.toFixed(2)));
+            avrage_download.push(Number(item.download.bandwidth.toFixed(2)));
+            avrage_upload.push(Number(item.upload.bandwidth.toFixed(2)));
+            avrage_ping.push(Number(item.ping.latency.toFixed(2)));
+            total_download.push(Number(item.download.bytes.toFixed(2)));
+            total_upoload.push(Number(item.upload.bytes.toFixed(2)));
           });
 
           setTimeout(() => {

@@ -1,21 +1,7 @@
 const getReadableSpeedString = (fileSizeInBytes) => {
-  let i = -1;
-  const byteUnits = [
-    " kbps",
-    " Mbps",
-    " Gbps",
-    " Tbps",
-    "Pbps",
-    "Ebps",
-    "Zbps",
-    "Ybps",
-  ];
-  do {
-    fileSizeInBytes = fileSizeInBytes / 1024;
-    i++;
-  } while (fileSizeInBytes > 1024);
+  fileSizeInBytes = fileSizeInBytes / 125000;
 
-  return [Math.max(fileSizeInBytes, 0).toFixed(2), byteUnits[i]];
+  return [Math.max(fileSizeInBytes, 0).toFixed(2), "Mbps"];
 };
 
 const getReadableFileSizeString = (fileSizeInBytes) => {
