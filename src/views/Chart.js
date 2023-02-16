@@ -141,16 +141,16 @@ function Home({ days, setLoading, setLoadingErrorMsg, loading }) {
           // downloads
           filtered_data.map((item) => {
             return chart_data_download.push(
-              (item.download / 1000000).toFixed(2)
+              (item.download.bandwidth / 125000).toFixed(2)
             );
           });
           // uploads
           filtered_data.map((item) => {
-            return chart_data_upload.push((item.upload / 1000000).toFixed(2));
+            return chart_data_upload.push((item.upload.bandwidth / 125000).toFixed(2));
           });
           // ping
           filtered_data.map((item) => {
-            return chart_data_ping_and_id.push([item.ping.toFixed(2), item.id]);
+            return chart_data_ping_and_id.push([item.ping.latency.toFixed(2), item.id]);
           });
 
           setTimestamps(chart_data_time);
