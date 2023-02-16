@@ -1,6 +1,7 @@
 import moment from "moment";
 
 const HeaderDate = ({ daysSelected }) => {
+  const startdate = moment();
   if (daysSelected === 0) {
     return (
       <div>
@@ -22,9 +23,7 @@ const HeaderDate = ({ daysSelected }) => {
           {daysSelected !== 1 ? (
             <>
               <span className="fw-light">From: </span>{" "}
-              {moment()
-                .days(-daysSelected + 1)
-                .format("DD MMM YYYY")}{" "}
+              {startdate.subtract(daysSelected, "days").format("DD MMM YYYY")}{" "}
               <span className="fw-light">To: </span>
               {moment().format("DD MMM YYYY")}
             </>

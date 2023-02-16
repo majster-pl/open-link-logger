@@ -121,7 +121,7 @@ function Home({ days, setLoading, setLoadingErrorMsg, loading }) {
           const filtered_data = response.data.filter(function (i, n) {
             if (daysSelected !== 0) {
               return (
-                moment().subtract(daysSelected * 24, "hours") <
+                moment().subtract(daysSelected , "days") <
                 moment(new Date(i.timestamp))
               );
             } else {
@@ -148,18 +148,6 @@ function Home({ days, setLoading, setLoadingErrorMsg, loading }) {
               chart_data_ping_and_id.push(item.id);
             } 
           });
-          // downloads
-          // filtered_data.map((item) => {
-          //   return item.download.bandwidth && chart_data_download.push( (item.download.bandwidth / 125000).toFixed(2));
-          // });
-          // uploads
-          // filtered_data.map((item) => {
-          //   return chart_data_upload.push((item.upload.bandwidth / 125000).toFixed(2));
-          // });
-          // ping
-          // filtered_data.map((item) => {
-          //   return chart_data_ping_and_id.push([item.ping.latency.toFixed(2), item.id]);
-          // });
 
           setTimestamps(chart_data_time);
           setDownloads(chart_data_download);
@@ -169,7 +157,7 @@ function Home({ days, setLoading, setLoadingErrorMsg, loading }) {
         })
         .catch((err) => {
           setLoadingErrorMsg(JSON.stringify(err));
-          setDownloads(null);
+          setDownloads([]);
         });
     };
 
