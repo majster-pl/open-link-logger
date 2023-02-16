@@ -11,7 +11,6 @@ import moment from "moment";
 import apiClient from "../service/api";
 import { useState, useEffect } from "react";
 import {
-  checkIfExists,
   getReadableSpeedString,
   getReadableFileSizeString,
 } from "../js/main_fn";

@@ -1,12 +1,12 @@
 import { Modal, Table, Button } from "react-bootstrap"
-import { checkIfExists, getReadableSpeedString, getReadableFileSizeString } from "../js/main_fn";
+import { getReadableSpeedString, getReadableFileSizeString } from "../js/main_fn";
 import moment from "moment";
 
 const ModalTest = ({ modalData, setShowModal }) => {
   return (
     <>
       <Modal.Header closeButton>
-        <Modal.Title>Test ID: {checkIfExists(modalData.id)}</Modal.Title>
+        <Modal.Title>Test ID: {modalData.id ?? "Unknown"}</Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
@@ -18,76 +18,60 @@ const ModalTest = ({ modalData, setShowModal }) => {
             <tr>
               <td>Date & Time</td>
               <td>
-                {moment(new Date(checkIfExists(modalData.timestamp))).format(
-                  "HH:mm dddd DD-MMM-YYYY"
-                )}
+                {modalData.timestamp ? moment(new Date(modalData.timestamp)).format("DD-MMM-YYYY HH:mm") : "Unknown"}
               </td>
             </tr>
             <tr>
               <td>Download</td>
               <td>
-                {getReadableSpeedString(checkIfExists(modalData.download))}
+                {modalData.download && modalData.download.bandwidth ? getReadableSpeedString(modalData.download.bandwidth) : "Unknown"}
               </td>
             </tr>
             <tr>
               <td>Upload</td>
-              <td>{getReadableSpeedString(checkIfExists(modalData.upload))}</td>
+              <td>{modalData.upload && modalData.upload.bandwidth ? getReadableSpeedString(modalData.upload.bandwidth) : "Unknown"}</td>
             </tr>
             <tr>
               <td>Ping</td>
-              <td>{checkIfExists(modalData.ping) + " ms"}</td>
+              <td>{modalData.ping && modalData.ping.latency ? modalData.ping.latency + " ms" : "Unknown"}</td>
+            </tr>
+            <tr>
+              <td>Lost Packets</td>
+              <td>{modalData.packetLoss ||modalData.packetLoss >= 0 ? modalData.packetLoss : "Unknown"}</td>
             </tr>
             <tr>
               <td>Data Received</td>
               <td>
-                {getReadableFileSizeString(
-                  checkIfExists(modalData.bytes_received)
-                )}
+                {modalData.download && modalData.download.bytes ? getReadableFileSizeString(modalData.download.bytes) : "Unknown"}
+              </td>
+            </tr>
+            <tr>
+              <td>Link to test</td>
+              <td>
+                {(modalData.result && modalData.result.url) ? <a href={modalData.result.url} target="_blank">{modalData.result.url}</a> : "Unknown"}
               </td>
             </tr>
             <tr>
               <td>Data Sent</td>
               <td>
-                {getReadableFileSizeString(checkIfExists(modalData.bytes_sent))}
+                {modalData.upload && modalData.upload.bytes ? getReadableFileSizeString(modalData.upload.bytes) : "Unknown"}
               </td>
             </tr>
             <tr>
               <th colSpan={2}>Client</th>
             </tr>
             <tr>
-              <td>Country</td>
-              <td>{checkIfExists(modalData.client.country)}</td>
+              <td>VPN network</td>
+              <td>{modalData.interface && modalData.interface.isVpn ? "Yes" : "No"}</td>
             </tr>
             <tr>
               <td>IP</td>
-              <td>{checkIfExists(modalData.client.ip)}</td>
+              <td>{modalData.interface && modalData.interface.externalIp ? modalData.interface.externalIp : "Unknown"}</td>
             </tr>
 
             <tr>
-              <td>Location</td>
-              <td>
-                <a
-                  href={
-                    "https://www.google.com/maps/place/" +
-                    checkIfExists(modalData.client.lat) +
-                    " " +
-                    checkIfExists(modalData.client.lon)
-                  }
-                  target={"_blank"}
-                >
-                  {checkIfExists(modalData.client.lat) +
-                    " " +
-                    checkIfExists(modalData.client.lon)}
-                </a>
-              </td>
-            </tr>
-            <tr>
-              <td>ISP Rating</td>
-              <td>{checkIfExists(modalData.client.isprating)}</td>
-            </tr>
-            <tr>
               <td>ISP</td>
-              <td>{checkIfExists(modalData.client.isp)}</td>
+              <td>{modalData.isp ?? "Unknown"}</td>
             </tr>
             <tr>
               <th colSpan={2}>Server</th>
@@ -95,45 +79,25 @@ const ModalTest = ({ modalData, setShowModal }) => {
             <tr>
               <td>Country</td>
               <td>
-                {checkIfExists(modalData.server.country) +
-                  " (" +
-                  checkIfExists(modalData.server.cc) +
-                  ")"}
+                {modalData.server && (modalData.server.country && modalData.server.location) ?
+                  modalData.server.country + " (" + modalData.server.location + ")" : "Unknown"}
               </td>
             </tr>
             <tr>
               <td>Host</td>
-              <td>{checkIfExists(modalData.server.host)}</td>
+              <td>{(modalData.server && modalData.server.host) ?? "Unknown"}</td>
             </tr>
             <tr>
               <td>Location</td>
-              <td>{checkIfExists(modalData.server.name)}</td>
-            </tr>
-            <tr>
-              <td>Coordinates</td>
-              <td>
-                <a
-                  href={
-                    "https://www.google.com/maps/place/" +
-                    checkIfExists(modalData.server.lat) +
-                    " " +
-                    checkIfExists(modalData.server.lon)
-                  }
-                  target={"_blank"}
-                >
-                  {checkIfExists(modalData.server.lat) +
-                    " " +
-                    checkIfExists(modalData.server.lon)}
-                </a>
-              </td>
+              <td>{(modalData.server && modalData.server.name) ?? "Unknown"}</td>
             </tr>
             <tr>
               <td>Id</td>
-              <td>{checkIfExists(modalData.server.id)}</td>
+              <td>{(modalData.server && modalData.server.id) ?? "Unknown"}</td>
             </tr>
             <tr>
-              <td>Latency</td>
-              <td>{checkIfExists(modalData.server.latency)}</td>
+              <td>IP</td>
+              <td>{(modalData.server && modalData.server.ip) ?? "Unknown"}</td>
             </tr>
           </tbody>
         </Table>

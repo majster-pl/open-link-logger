@@ -2,7 +2,6 @@ import { useMemo } from "react";
 import {
   getReadableSpeedString,
   getReadableFileSizeString,
-  checkIfExists,
 } from "../js/main_fn";
 import {
   Container,
@@ -87,21 +86,21 @@ function TablePage({ days, setLoading, setLoadingErrorMsg }) {
         Header: "Download",
         accessor: "download",
         Cell: ({ value }) => {
-          return getReadableSpeedString(value);
+          return value.bandwidth ? getReadableSpeedString(value.bandwidth) : "Unknown";
         },
       },
       {
         Header: "Upload",
         accessor: "upload",
         Cell: ({ value }) => {
-          return getReadableSpeedString(value);
+          return value.bandwidth ? getReadableSpeedString(value.bandwidth) : "Unknown";
         },
       },
       {
         Header: "Ping",
         accessor: "ping",
         Cell: ({ value }) => {
-          return value.toFixed(2) + " ms";
+          return value.latency ? value.latency.toFixed(2) + " ms" : "Unknown";
         },
       },
       {
